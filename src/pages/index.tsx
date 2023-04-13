@@ -1,29 +1,41 @@
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next'
-import { useRouter } from 'next/router'
+import { NextPageWithLayout } from './_app'
+import { ReactElement } from 'react'
+import Head from 'next/head'
+import DashboardLayout from '@/components/layouts/dashboard'
 
 
 export async function getStaticProps({ locale }: { locale: string }) {
   return {
     props: {
       ...(await serverSideTranslations(locale, [
-        'common',
+        'auth',
       ])),
     },
   }
 }
 
-export default function Home() {
-
-  const { t } = useTranslation('common')
-
-  const {locale} = useRouter()
-
-  const fontClass = `${locale === 'fa' ? 'font-irsans' : ''} ${locale === 'ckb' ? 'font-rudaw' : ''}`
+const Home: NextPageWithLayout = () => {
+  
+  const { t } = useTranslation('auth')
 
   return (
-    <main className={`p-24 rtl:bg-slate-400 ${fontClass}`}>
-      <h1>{t('welcome')}</h1>
-    </main>
+    <>
+      <Head>
+        <title>SamCity | {t('login.header')}</title>
+      </Head>
+      <h1>{t('login.header')}</h1>
+    </>
   )
 }
+
+Home.getLayout = function getLayout(page: ReactElement) {
+  return (
+    <DashboardLayout>
+      {page}
+    </DashboardLayout>
+  )
+}
+
+export default Home;
