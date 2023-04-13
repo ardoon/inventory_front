@@ -3,8 +3,7 @@ import { useTranslation } from 'next-i18next'
 import { useRouter } from 'next/router'
 
 
-export async function getStaticProps({ locale }) {
-
+export async function getStaticProps({ locale }: { locale: string }) {
   return {
     props: {
       ...(await serverSideTranslations(locale, [
