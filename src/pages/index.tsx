@@ -23,7 +23,7 @@ const Home: NextPageWithLayout = () => {
   return (
     <>
       <Head>
-        <title>SamCity | {t('login.header')}</title>
+        <title>{`SamCity | ${t('login.header')}`}</title>
       </Head>
       <h1>{t('login.header')}</h1>
     </>

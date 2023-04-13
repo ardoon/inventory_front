@@ -3,7 +3,6 @@ module.exports = {
       defaultLocale: 'fa',
       locales: ['en', 'fa', 'ckb'],
       localeDetection: false,
-      reloadOnPrerender: true
     },
   }
 
