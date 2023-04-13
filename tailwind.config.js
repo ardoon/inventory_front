@@ -8,7 +8,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        irsans: ['irsans']
+        irsans: ['irsans'],
+        rudaw: ['rudaw']
       },
     },
   },

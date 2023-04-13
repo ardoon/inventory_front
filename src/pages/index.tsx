@@ -20,8 +20,10 @@ export default function Home() {
 
   const {locale} = useRouter()
 
+  const fontClass = `${locale === 'fa' ? 'font-irsans' : ''} ${locale === 'ckb' ? 'font-rudaw' : ''}`
+
   return (
-    <main className={`p-24 rtl:bg-slate-400 ${locale === 'fa' ? 'font-irsans' : ''}`}>
+    <main className={`p-24 rtl:bg-slate-400 ${fontClass}`}>
       <h1>{t('welcome')}</h1>
     </main>
   )

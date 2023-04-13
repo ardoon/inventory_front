@@ -15,3 +15,17 @@
   font-weight: 600;
   src: local(''), url('/fonts/iransans/Woff/IRANSansXFaNum-Bold.woff') format('woff');
 }
+
+@font-face {
+  font-family: 'rudaw';
+  font-style: normal;
+  font-weight: 400;
+  src: local(''), url('/fonts/rudaw/regular/rudawregular2.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'rudaw';
+  font-style: bold;
+  font-weight: 600;
+  src: local(''), url('/fonts/rudaw/bold/rudawbold.woff') format('woff');
+}
