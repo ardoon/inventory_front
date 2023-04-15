@@ -4,10 +4,12 @@ export default function Document(props: DocumentProps) {
 
   const fontClass = `${props.locale === 'fa' ? 'font-irsans' : ''} ${props.locale === 'ckb' ? 'font-rudaw' : ''}`
 
+  const bodyStyles = ``
+  
   return (
     <Html lang={props.locale} dir={props.locale === 'fa' || props.locale === 'ckb' ? 'rtl': 'ltr'} className={fontClass}>
       <Head />
-      <body>
+      <body className='bg-slate-950'>
         <Main />
         <NextScript />
       </body>

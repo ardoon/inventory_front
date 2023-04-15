@@ -11,7 +11,12 @@ module.exports = {
         irsans: ['irsans'],
         rudaw: ['rudaw']
       },
+      fontSize: {
+        tiny: ['0.775rem', '1.15rem']
+      }
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/forms')
+  ],
 }

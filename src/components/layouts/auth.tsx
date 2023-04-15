@@ -5,15 +5,9 @@ export default function AuthLayout({ children }: {
 }) {
     return (
 
-        <main>
-
-            <h1 className='p-10 bg-slate-400'>Header Code</h1>
-
-            <section style={{ width: "1024px" }}>{children}</section>
-
-            <h1 className='p-10 bg-slate-400'>Footer</h1>
-
+        <main className='container mx-auto justify-center text-white'>
+            {children}
         </main>
-        
+
     )
 }

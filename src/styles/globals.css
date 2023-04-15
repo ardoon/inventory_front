@@ -29,3 +29,16 @@
   font-weight: 600;
   src: local(''), url('/fonts/rudaw/bold/rudawbold.woff') format('woff');
 }
+
+/* input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 30px #0F172A inset;
+  -moz-box-shadow: 0 0 0 30px #0F172A inset;
+  box-shadow: 0 0 0 30px #0F172A inset;
+}
+
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 100px #0F172A inset;
+  -moz-box-shadow: 0 0 0 100px #0F172A inset;
+  box-shadow: 0 0 0 100px #0F172A inset;
+  filter:none;
+} */
