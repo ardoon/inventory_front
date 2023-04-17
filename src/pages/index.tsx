@@ -1,7 +1,7 @@
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next'
 import { NextPageWithLayout } from './_app'
-import { ReactElement } from 'react'
+import { ReactElement, useEffect, useState } from 'react'
 import Head from 'next/head'
 import AuthLayout from '@/components/layouts/auth'
 import AuthInput from '@/components/partials/form-elements/auth-input'
@@ -12,6 +12,7 @@ export async function getStaticProps({ locale }: { locale: string }) {
     props: {
       ...(await serverSideTranslations(locale, [
         'auth',
+        'errorMessages'
       ])),
     },
   }
@@ -19,7 +20,7 @@ export async function getStaticProps({ locale }: { locale: string }) {
 
 const Home: NextPageWithLayout = () => {
 
-  const { t } = useTranslation('auth')
+  const { t } = useTranslation(['auth', 'errorMessages'])
 
   return (
     <>
@@ -38,11 +39,11 @@ const Home: NextPageWithLayout = () => {
 
             <AuthInput
               label={t('login.input', { context: 'username' })}
-              type='text' />
+              type='text' t={t} />
 
             <AuthInput
               label={t('login.input', { context: 'password' })}
-              type='password' />
+              type='password' t={t} />
 
             <div className='flex justify-start w-2/3 mx-auto space-y-2'>
               <label className='text-slate-300 text-sm order-last self-center pt-2' htmlFor='remember'>{t('login.input', { context: 'remember' })}</label>
