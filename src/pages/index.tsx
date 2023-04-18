@@ -1,7 +1,5 @@
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next'
-import { NextPageWithLayout } from './_app'
-import { ReactElement, useEffect, useState } from 'react'
 import Head from 'next/head'
 import AuthLayout from '@/components/layouts/auth'
 import AuthInput from '@/components/partials/form-elements/auth-input'
@@ -18,12 +16,12 @@ export async function getStaticProps({ locale }: { locale: string }) {
   }
 }
 
-const Home: NextPageWithLayout = () => {
+const Home = () => {
 
   const { t } = useTranslation(['auth', 'errorMessages'])
 
   return (
-    <>
+    <AuthLayout>
       <Head>
         <title>{`SamCity | ${t('login.head')}`}</title>
       </Head>
@@ -61,14 +59,6 @@ const Home: NextPageWithLayout = () => {
         </section>
 
       </section>
-    </>
-  )
-}
-
-Home.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <AuthLayout>
-      {page}
     </AuthLayout>
   )
 }

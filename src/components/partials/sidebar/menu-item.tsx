@@ -1,0 +1,46 @@
+import React, { useState } from "react";
+import { TFunction } from 'next-i18next'
+import Link from "next/link";
+import { useRouter } from "next/router";
+
+type inputProps = {
+    children?: React.ReactNode,
+    label: string,
+    icon: string,
+    link: string,
+}
+
+export default function MenuItem(props: inputProps) {
+
+    const [active, setActive] = useState<Boolean>(false);
+
+    const router = useRouter();    
+
+    return (
+        <>
+            <li>
+                <div className='flex items-center'>
+                    <i className={`bi bi-${props.icon} rtl:ml-2 ltr:mr-2 text-xl text-indigo-400`}></i>
+                    <Link href={props.link} className='hover:text-indigo-400 block'>
+                        {props.label}
+                    </Link>
+
+                    {
+                        props.children ? 
+                            active === true ? <i onClick={() => { setActive(!active) }} className="bi bi-caret-down rtl:mr-1 ltr:ml-1 cursor-pointer"></i> : <i onClick={() => { setActive(!active) }} className={`bi rtl:mr-1 ltr:ml-1 self-center cursor-pointer ${ router.locale === 'en' ? 'bi-caret-right' : 'bi-caret-left'}`}></i>
+                        : ''
+                    }
+
+                </div>
+                {
+                    active === true ?
+                        <ul className='rtl:pr-4 ltr:pl-4 mt-4 mb-8 text-tiny space-y-3'>
+                            {props.children}
+                        </ul>
+                        : ''
+                }
+
+            </li>
+        </>
+    )
+}

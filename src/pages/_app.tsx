@@ -1,26 +1,12 @@
 import '@/styles/globals.css'
-import type { AppProps } from 'next/app'
+import 'bootstrap-icons/font/bootstrap-icons.css'
 import { appWithTranslation } from 'next-i18next'
-import type { ReactElement, ReactNode } from 'react'
-import type { NextPage } from 'next'
+import { AppProps } from 'next/app'
 
-export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
-  getLayout?: (page: ReactElement) => ReactNode
-}
+function App({ Component, pageProps }: AppProps) {
 
-type AppPropsWithLayout = AppProps & {
-  Component: NextPageWithLayout
-}
-
-function App({ Component, pageProps }: AppPropsWithLayout) {
-
-
-  const getLayout = Component.getLayout ?? ((page) => page)
-
-  return getLayout(
-    <Component {...pageProps} />
-  )
-
+  return <Component {...pageProps} />
+  
 }
 
 export default appWithTranslation(App)
