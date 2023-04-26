@@ -11,7 +11,7 @@ export default function DashboardLayout({ children }: {
     return (
         <main className='grid grid-cols-5 text-slate-300'>
             <Sidebar t={t} />
-            <section className='col-span-4'>
+            <section className='col-span-4 p-12'>
                 {children}
             </section>
         </main>

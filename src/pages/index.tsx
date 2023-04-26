@@ -28,8 +28,8 @@ const Home = () => {
       <section className='lg:w-5/12 md:w-2/3 sm:w-full mx-auto h-3 pt-28'>
 
         <header className='text-center'>
-          <h1 className='text-4xl'>{t('login.title')}</h1>
-          <h2 className='mt-6 text-sm text-slate-500'>{t('login.description')}</h2>
+          <h1 className='text-4xl font-bold'>{t('login.title')}</h1>
+          <h2 className='mt-6 text-sm text-gray-400'>{t('login.description')}</h2>
         </header>
 
         <section className='mt-12'>

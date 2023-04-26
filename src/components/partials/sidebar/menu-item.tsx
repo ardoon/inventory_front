@@ -34,7 +34,7 @@ export default function MenuItem(props: inputProps) {
                 </div>
                 {
                     active === true ?
-                        <ul className='rtl:pr-4 ltr:pl-4 mt-4 mb-8 text-tiny space-y-3'>
+                        <ul className='rtl:pr-4 ltr:pl-4 mt-4 mb-8 space-y-3 text-sm'>
                             {props.children}
                         </ul>
                         : ''

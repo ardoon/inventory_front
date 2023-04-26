@@ -13,15 +13,15 @@ export default function Sidebar(props: inputProps) {
 
             <div className='text-center pb-4'>
 
-                <h4 className='text-tiny mb-3 text-slate-400'>{props.t('header.welcome')}</h4>
+                <h4 className='text-sm mb-3 text-gray-400'>{props.t('header.welcome')}</h4>
 
-                <h2 className='text-2xl'>{props.t('header.title')}</h2>
+                <h2 className='text-3xl'>{props.t('header.title')}</h2>
 
             </div>
 
             <nav className='mt-16'>
 
-                <ul className='space-y-4 text-lg text-sm'>
+                <ul className='space-y-4 text-lg'>
 
                     <MenuItem label={props.t('menu.label', { context: 'transactions' })} icon='arrow-left-right' link='/'>
                             
@@ -41,18 +41,20 @@ export default function Sidebar(props: inputProps) {
 
                     </MenuItem>
 
-                    <MenuItem label={props.t('menu.label', { context: 'products' })} icon='box' link='/'>
+                    <MenuItem label={props.t('menu.label', { context: 'products' })} icon='box' link='/dashboard/products' />
+
+                    {/* <MenuItem label={props.t('menu.label', { context: 'products' })} icon='box' link='/dashboard/products'>
                             
                             <SubMenuItem label={props.t('menu.products.label', { context: 'newProduct' })} link='/' />
-                            <SubMenuItem label={props.t('menu.products.label', { context: 'products' })} link='/' />
+                            <SubMenuItem label={props.t('menu.products.label', { context: 'products' })} link='/dashboard/products' />
                             <SubMenuItem label={props.t('menu.products.label', { context: 'categories' })} link='/' />
                             <SubMenuItem label={props.t('menu.products.label', { context: 'units' })} link='/' />
 
-                    </MenuItem>
+                    </MenuItem> */}
 
-                    <MenuItem label={props.t('menu.label', { context: 'parts' })} icon='buildings' link='/' />
-                    <MenuItem label={props.t('menu.label', { context: 'warehouses' })} icon='columns-gap' link='/' />
-                    <MenuItem label={props.t('menu.label', { context: 'users' })} icon='people' link='/' />
+                    <MenuItem label={props.t('menu.label', { context: 'parts' })} icon='buildings' link='/dashboard/sections' />
+                    <MenuItem label={props.t('menu.label', { context: 'warehouses' })} icon='columns-gap' link='/dashboard/warehouses' />
+                    <MenuItem label={props.t('menu.label', { context: 'users' })} icon='people' link='/dashboard/users' />
 
                 </ul>
 
