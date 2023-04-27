@@ -35,7 +35,7 @@ const SubCategories = () => {
       </Head>
 
       <header className="mb-10">
-        <SectionHeading title='مصالح مصرفی کارگاه' />
+        <SectionHeading title='مصالح مصرفی کارگاه' backward={true} />
 
         <div className="h-48 grid grid-cols-3 gap-6 mb-10">
           <ShortcutBox label='لیست کالاها' icon='archive' link='list/مصالح-مصرفی-کارگاه' />
