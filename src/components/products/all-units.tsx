@@ -14,7 +14,7 @@ export default function AllUnits({title} : {
 
     return (
         <section>
-            <SectionHeading title={title || `دسته های اصلی`} />
+            <SectionHeading title={title || `دسته های اصلی`} backward='/dashboard/products' />
 
             <ul className="grid grid-cols-3 gap-4">
 
