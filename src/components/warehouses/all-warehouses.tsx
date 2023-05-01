@@ -1,6 +1,6 @@
-import ListItem from "../dashboard/list-item"
-import ListItemInput from "../dashboard/list-item-input";
-import SectionHeading from "../dashboard/section-heading";
+import ListItem from "../partials/dashboard/list-item";
+import ListItemInput from "../partials/dashboard/list-item-input";
+import SectionHeading from "../partials/dashboard/section-heading";
 
 export default function AllWarehouses({title} : {
     title?: string

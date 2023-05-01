@@ -23,23 +23,9 @@ export default function Sidebar(props: inputProps) {
 
                 <ul className='space-y-4 text-lg'>
 
-                    <MenuItem label={props.t('menu.label', { context: 'transactions' })} icon='arrow-left-right' link='/'>
-                            
-                            <SubMenuItem label={props.t('menu.transactions.label', { context: 'newEntry' })} link='/' />
-                            <SubMenuItem label={props.t('menu.transactions.label', { context: 'entries' })} link='/' />
-                            <SubMenuItem label={props.t('menu.transactions.label', { context: 'newOutput' })} link='/' />
-                            <SubMenuItem label={props.t('menu.transactions.label', { context: 'outputs' })} link='/' />
+                    <MenuItem label={props.t('menu.label', { context: 'transactions' })} icon='arrow-left-right' link='/dashboard/transactions' />
 
-                    </MenuItem>
-
-                    <MenuItem label={props.t('menu.label', { context: 'reports' })} icon='card-heading' link='/'>
-                            
-                            <SubMenuItem label={props.t('menu.reports.label', { context: 'entry' })} link='/' />
-                            <SubMenuItem label={props.t('menu.reports.label', { context: 'output' })} link='/' />
-                            <SubMenuItem label={props.t('menu.reports.label', { context: 'amount' })} link='/' />
-                            <SubMenuItem label={props.t('menu.reports.label', { context: 'cardex' })} link='/' />
-
-                    </MenuItem>
+                    <MenuItem label={props.t('menu.label', { context: 'reports' })} icon='card-heading' link='/' />
 
                     <MenuItem label={props.t('menu.label', { context: 'products' })} icon='box' link='/dashboard/products' />
 

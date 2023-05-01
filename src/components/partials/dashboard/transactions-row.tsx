@@ -2,20 +2,12 @@ import Link from "next/link";
 
 type inputProps = {
     type: string,
-    hasNotTitleBox: boolean
 }
 
-export default function RecentTransactionsRow(props: inputProps) {
+export default function TransactionsRow(props: inputProps) {
 
     return (
         <div className="flex items-center w-full h-16 bg-slate-900 rounded-md">
-            <div className="flex items-center justify-center w-16 h-full bg-slate-800 rtl:rounded-r-md ltr:rounded-l-md">
-                {
-                    props.type === 'entry' ?
-                        <span className="text-green-300 font-bold">ورود</span>
-                        : <span className="text-red-300 font-bold">خروج</span>
-                }
-            </div>
 
             <div className="grid grid-cols-12 flex-grow px-6 items-center">
                 <div className="col-span-3">

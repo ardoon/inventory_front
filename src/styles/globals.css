@@ -42,3 +42,59 @@ input:-webkit-autofill:focus {
   box-shadow: 0 0 0 100px #0F172A inset;
   filter:none;
 } */
+
+.custom-calendar.rmdp-wrapper,
+.rmdp-container .custom-calendar.ep-arrow::after {
+  background-color: rgb(30 41 59);
+  color: #fff !important;
+  box-shadow: none;
+}
+
+.rmdp-container .custom-calendar.ep-arrow[direction="bottom"] {
+  border-bottom: none;
+}
+
+.rmdp-container .custom-calendar.ep-arrow[direction="top"] {
+  border-bottom: none;
+}
+
+.custom-calendar .rmdp-year-picker,
+.rmdp-month-picker {
+  background-color: rgb(30 41 59) !important;
+}
+
+.custom-calendar .rmdp-day span,
+.custom-calendar .rmdp-week-day,
+.custom-calendar .rmdp-header-values {
+  color: #fff !important
+}
+
+.custom-calendar .rmdp-arrow {
+  border: solid #dae1e8;
+  border-width: 0 2px 2px 0;
+}
+
+.custom-calendar .rmdp-arrow-container:hover {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.rmdp-day.rmdp-selected span:not(.highlight) {
+  box-shadow: none !important;
+  background-color: rgb(79 70 229) !important;
+}
+
+.rmdp-selected {
+  box-shadow: none !important;
+  background-color: rgb(79 70 229) !important;
+  border-radius: 6px;
+  height: 28px !important;
+  
+}
+
+.rmdp-day.rmdp-today span {
+  background-color: #444444 !important;
+  border-radius: 6px !important;
+  height: 28px !important;
+}
+
