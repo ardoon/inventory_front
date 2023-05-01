@@ -22,7 +22,7 @@ export default function AllUnits({title} : {
                 
                 {
                     units.map( (unit) => {
-                        return <ListItem label={unit.name} link={`/dashboard/products/units/${unit.name}`} />
+                        return <ListItem key={unit.name} label={unit.name} link={`/dashboard/products/units/${unit.name}`} />
                     })
                 }
             </ul>
