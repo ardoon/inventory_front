@@ -11,24 +11,6 @@ import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import { useDispatch, useSelector } from "react-redux"
 
-export async function getStaticPaths() {
-  return {
-    paths: [],
-    fallback: true
-  }
-}
-
-export async function getStaticProps({ locale }: { locale: string }) {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, [
-        'sidebar',
-        'dashboard',
-      ])),
-    },
-  }
-}
-
 const EditUnit = () => {
 
   const router = useRouter()

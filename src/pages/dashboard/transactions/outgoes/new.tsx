@@ -1,24 +1,12 @@
 import DashboardLayout from "@/components/layouts/dashboard"
 import SectionHeading from "@/components/partials/dashboard/section-heading"
 import TextInput from "@/components/partials/dashboard/TextInput"
-import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 import Head from "next/head"
 import { useTranslation } from "react-i18next"
 import DatePicker from "react-multi-date-picker";
 import jalali from "react-date-object/calendars/jalali"
 import persian_fa from "react-date-object/locales/persian_fa"
 import { useEffect, useState } from "react"
-
-export async function getStaticProps({ locale }: { locale: string }) {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, [
-        'sidebar',
-        'dashboard',
-      ])),
-    },
-  }
-}
 
 const NewOutgo = () => {
 

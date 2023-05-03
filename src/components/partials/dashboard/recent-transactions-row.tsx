@@ -2,7 +2,6 @@ import Link from "next/link";
 
 type inputProps = {
     type: string,
-    hasNotTitleBox: boolean
 }
 
 export default function RecentTransactionsRow(props: inputProps) {

@@ -7,6 +7,10 @@ export default function Sections({ title }: {
     title?: string
 }) {
 
+    const add = (name: string) => {
+
+    }
+
     return (
         <section>
             <SectionHeading title={title || `بخش های اصلی`} search={true} />
@@ -18,11 +22,11 @@ export default function Sections({ title }: {
 
             <ul className="space-y-6">
 
-                <ListItemInput id="categoryName" placeHolder="نام بخش جدید را وارد کنید.." />
-                <ListItem label="مصالح مصرفی کارگاه" link='products/مصالح-مصرفی-کارگاه' />
-                <ListItem label="ابنیه" link='products/ابنیه/زیرمجموعه' />
-                <ListItem label="تاسیسات الکتریکی" link='/' />
-                <ListItem label="تاسیسات مکانیکی" link='/' />
+                <ListItemInput id="categoryName" add={add} placeHolder="نام بخش جدید را وارد کنید.." />
+                <ListItem label="مصالح مصرفی کارگاه" link='products/' slug='[section]' id='1'/>
+                <ListItem label="ابنیه" link='products/ابنیه/زیرمجموعه' slug='[section]' id='1'/>
+                <ListItem label="تاسیسات الکتریکی" link='/' slug='[section]' id='1'/>
+                <ListItem label="تاسیسات مکانیکی" link='/' slug='[section]' id='1'/>
 
             </ul>
         </section>

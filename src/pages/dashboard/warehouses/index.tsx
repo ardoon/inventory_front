@@ -1,19 +1,7 @@
 import DashboardLayout from "@/components/layouts/dashboard"
 import AllWarehouses from "@/components/warehouses/all-warehouses"
-import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 import Head from "next/head"
 import { useTranslation } from "react-i18next"
-
-export async function getStaticProps({ locale }: { locale: string }) {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, [
-        'sidebar',
-        'dashboard',
-      ])),
-    },
-  }
-}
 
 const Warehouses = () => {
 

@@ -1,8 +1,4 @@
-import ProductItem from "@/components/products/product-item";
 import Link from "next/link";
-import ListItem from "../partials/dashboard/list-item"
-import ListItemInput from "../partials/dashboard/list-item-input";
-import SectionHeading from "../partials/dashboard/section-heading";
 import UserItem from "./user-item";
 
 export default function AllUsers({ title }: {

@@ -2,20 +2,8 @@ import DashboardLayout from "@/components/layouts/dashboard"
 import ShortcutBox from "@/components/partials/dashboard/shortcut-box"
 import TextInput from "@/components/partials/dashboard/TextInput"
 import Categories from "@/components/products/categories"
-import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 import Head from "next/head"
 import { useTranslation } from "react-i18next"
-
-export async function getStaticProps({ locale }: { locale: string }) {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, [
-        'sidebar',
-        'dashboard',
-      ])),
-    },
-  }
-}
 
 const Products = () => {
 

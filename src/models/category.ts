@@ -1,6 +1,8 @@
+import Product from "./product";
+
 export default interface Category {
     id: string,
     name: string,
-    parentId?: string,
-    ratio?: number
+    children?: Category[],
+    products?: Product[],
 }

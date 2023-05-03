@@ -1,3 +1,3 @@
 export default interface Unit {
-    name: string
-  }
+  name: string
+}

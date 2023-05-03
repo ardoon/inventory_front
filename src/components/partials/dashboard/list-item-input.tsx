@@ -1,35 +1,32 @@
-import { addUnit } from "@/store/slices/unitsSlice";
-import { AppDispatch } from "@/store/store";
-import Link from "next/link"
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { v4 as uuidv4 } from 'uuid';
 
-export default function ListItemInput({ placeHolder, id }: {
+export default function ListItemInput({ placeHolder, id, add }: {
     placeHolder: string,
     id: string,
+    add: Function
 }) {
 
-    const dispatch = useDispatch<AppDispatch>();
-
-    const [unitName, setUnitName] = useState<string>("");
+    const [name, setName] = useState<string>("");
 
     const inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setUnitName(e.target.value)
+        setName(e.target.value)
     }
 
-    const addUnitHandler = (e: React.FormEvent) => {
+    const addHandler = (e: React.FormEvent) => {
         
         e.preventDefault();
 
-        let unit = {
-            name: unitName
+        let newOne = {
+            id: uuidv4(),
+            name: name
         }
 
         // API call
 
-        dispatch(addUnit(unit))
+        add(newOne)
 
-        setUnitName("");
+        setName("");
 
     }
 
@@ -44,9 +41,9 @@ export default function ListItemInput({ placeHolder, id }: {
                         placeholder={placeHolder}
                         className="flex-grow bg-transparent border-0 focus:ring-0"
                         onChange={(e) => inputHandler(e)}
-                        value={unitName}
+                        value={name}
                     />
-                    <button onClick={(e) => addUnitHandler(e)} type="submit" className="rtl:ml-2 ltr:mr-2 hover:text-indigo-400">افزودن</button>
+                    <button onClick={(e) => addHandler(e)} type="submit" className="rtl:ml-2 ltr:mr-2 hover:text-indigo-400">افزودن</button>
                 </form>
             </li>
         </>
