@@ -11,7 +11,7 @@ export default function Categories({ title }: {
 }) {
 
     const categories = useSelector((state: RootState) => 
-        state.categories
+        state.categories.filter(category => category.parentId === undefined)
     )
 
     const dispatch = useDispatch<AppDispatch>();

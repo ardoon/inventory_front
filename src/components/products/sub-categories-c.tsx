@@ -1,7 +1,7 @@
 import Category from "@/models/category";
-import { addCategory, addSubCategory } from "@/store/slices/categoriesSlice";
-import { AppDispatch, RootState } from "@/store/store";
-import { useDispatch, useSelector } from "react-redux";
+import { addCategory } from "@/store/slices/categoriesSlice";
+import { AppDispatch } from "@/store/store";
+import { useDispatch } from "react-redux";
 import ListItem from "../partials/dashboard/list-item";
 import ListItemInput from "../partials/dashboard/list-item-input";
 import SectionHeading from "../partials/dashboard/section-heading";
@@ -15,7 +15,8 @@ export default function SubCategoriesC({ title, categories, id }: {
     const dispatch = useDispatch<AppDispatch>();
 
     const add = (cate: Category) => {
-        dispatch(addSubCategory({category: cate, key: id}));
+        cate = {...cate, parentId: id}
+        dispatch(addCategory(cate));
     }
 
     return (

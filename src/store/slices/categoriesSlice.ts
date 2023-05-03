@@ -11,27 +11,6 @@ export const categoriesSlice = createSlice({
     addCategory: (state, action: PayloadAction<Category>) => {
       state.push(action.payload)
     },
-    addSubCategory: (state, action: PayloadAction<{ category: Category, key: string }>) => {
-
-      const { category, key } = action.payload
-
-      return state.map((item: Category) => {
-
-        const newItem = {
-          ...item
-        }
-
-        if (newItem.children === undefined) {
-          newItem.children = [category]
-        } else {
-          const newChildren = item.children?.concat([category])
-          newItem.children = newChildren
-        }
-
-        return item.id === key ? newItem : item
-          
-      })
-    },
     updateCategory: (state, action: PayloadAction<{ category: Partial<Category>, key: string }>) => {
       const { category, key } = action.payload
       return state.map((item: Category) => {
@@ -45,6 +24,6 @@ export const categoriesSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { addCategory, addSubCategory, updateCategory, deleteCategory } = categoriesSlice.actions
+export const { addCategory, updateCategory, deleteCategory } = categoriesSlice.actions
 
 export default categoriesSlice.reducer

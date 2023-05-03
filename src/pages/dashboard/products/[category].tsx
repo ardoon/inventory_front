@@ -1,7 +1,6 @@
 import DashboardLayout from "@/components/layouts/dashboard"
 import SectionHeading from "@/components/partials/dashboard/section-heading"
 import ShortcutBox from "@/components/partials/dashboard/shortcut-box"
-import Categories from "@/components/products/categories"
 import SubCategoriesC from "@/components/products/sub-categories-c"
 import Category from "@/models/category"
 import { RootState } from "@/store/store"
@@ -16,34 +15,14 @@ const SubCategories = () => {
 
   const router = useRouter();
 
-  // function findCategory(categories: Category[]) {
-  //   return categories.find((cate) => {
-  //     if(cate.children) {
-  //       findCategory(cate.children)
-  //     }
-  //     return cate.id === router.query.category
-  //   })
-  // }
-
-  function findById(data: Category[], id: string) {
-    function iter(a: Category) {
-      if (a.id === id) {
-        result = a;
-        return true;
-      }
-      return Array.isArray(a.children) && a.children.some(iter);
-    }
-
-    let result;
-    data.some(iter);
-    return result
-  }
-
-  const category = useSelector((state: RootState) =>
-    findById(state.categories, router.query.category as string)
+  const categories: Category[] = useSelector((state: RootState) =>
+    state.categories
   )
 
-  // const category = findById(categories, router.query.category as string)
+  const category = categories.find((cate) => cate.id === router.query.category)
+  const subCategores = categories.filter((cate) => {
+    return cate.parentId === category?.id
+  })
 
   return (
     <DashboardLayout>
@@ -65,7 +44,7 @@ const SubCategories = () => {
 
             </header>
 
-            <SubCategoriesC title='زیر دسته ها' id={category.id} categories={category.children} />
+            <SubCategoriesC title='زیر دسته ها' id={category.id} categories={subCategores} />
           </>
 
           : <p>دسته یافت نشد</p>
