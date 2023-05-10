@@ -38,7 +38,7 @@ const SubCategories = () => {
 
               <div className="h-48 grid grid-cols-3 gap-6 mb-10">
                 <ShortcutBox label='لیست کالاها' icon='archive' link='list/مصالح-مصرفی-کارگاه' />
-                <ShortcutBox label='ویرایش دسته' icon='pencil-square' link='edit/مصالح-مصرفی-کارگاه' />
+                <ShortcutBox label='ویرایش دسته' icon='pencil-square' link={`edit/${category.id}`} />
                 <ShortcutBox label='حذف دسته' icon='trash' iconColor="rose-400" link='/' />
               </div>
 
