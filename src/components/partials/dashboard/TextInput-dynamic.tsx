@@ -1,0 +1,58 @@
+export default function TextInputDynamic({ id, label, colSpan, placeHolder, isDisable, data, value, inputHandler }: {
+    id: string,
+    label: string,
+    colSpan: number,
+    placeHolder?: string,
+    isDisable?: boolean,
+    data?: Array<any>,
+    value?: string,
+    inputHandler?: Function
+}) {
+
+    let listId;
+
+    if (data)
+        listId = 'list'
+
+    const handler = (e: React.ChangeEvent<HTMLInputElement>) => {
+        let value = e.target.value
+
+        if (data) {
+            data.forEach((item) => {
+                if (item.id === value) {
+                    e.target.value = item.name
+                }
+            })
+        }
+
+        if (inputHandler)
+            inputHandler(id, value)
+    }
+
+    return (
+        <div className={`col-span-${colSpan} space-y-2 relative`}>
+            <label className='text-slate-300 text-sm' htmlFor={id}>{label}</label>
+            <input
+                onChange={(e) => handler(e)}
+                id={id}
+                type='text'
+                list={listId}
+                value={value}
+                placeholder={placeHolder}
+                disabled={isDisable}
+                className={`h-12 border-0 text-slate-300 text-sm w-full rounded-md block bg-slate-800 focus:ring-0 px-4`} />            {
+                data ?
+                    (
+                        <datalist id='list' className="bg-yellow">
+
+                            {data?.map((item, index) => {
+                                return <option key={index} value={item.id} className="bg-yellow">{item.name}</option>
+                            })}
+
+                        </datalist>
+                    )
+                    : ''
+            }
+        </div>
+    )
+}

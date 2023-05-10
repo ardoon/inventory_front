@@ -46,10 +46,10 @@ const SubCategories = () => {
         category ?
           <>
             <header className="mb-10">
-              <SectionHeading title={category.name} backward={true} />
+              <SectionHeading title={category.name} backward />
 
               <div className="h-48 grid grid-cols-3 gap-6 mb-10">
-                <ShortcutBox label='لیست کالاها' icon='archive' link='list/مصالح-مصرفی-کارگاه' />
+                <ShortcutBox label='لیست کالاها' icon='archive' link={`list/${category.id}`} />
                 <ShortcutBox label='ویرایش دسته' icon='pencil-square' link={`edit/${category.id}`} />
                 <ShortcutBoxBtn label='حذف دسته' icon='trash' iconColor="rose-400" action={deleteCategoryHandler} />
               </div>
