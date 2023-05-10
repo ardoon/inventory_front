@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next"
 
 const ProductsList = () => {
 
-  const { t } = useTranslation(['dashboard'])
+  const { t } = useTranslation()
 
   return (
     <DashboardLayout>
