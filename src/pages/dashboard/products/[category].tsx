@@ -1,13 +1,15 @@
 import DashboardLayout from "@/components/layouts/dashboard"
 import SectionHeading from "@/components/partials/dashboard/section-heading"
 import ShortcutBox from "@/components/partials/dashboard/shortcut-box"
+import ShortcutBoxBtn from "@/components/partials/dashboard/shortcut-boxBtn"
 import SubCategoriesC from "@/components/products/sub-categories-c"
 import Category from "@/models/category"
-import { RootState } from "@/store/store"
+import { deleteCategory } from "@/store/slices/categoriesSlice"
+import { AppDispatch, RootState } from "@/store/store"
 import Head from "next/head"
 import { useRouter } from "next/router"
 import { useTranslation } from "react-i18next"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 
 const SubCategories = () => {
 
@@ -24,6 +26,16 @@ const SubCategories = () => {
     return cate.parentId === category?.id
   })
 
+  const dispatch = useDispatch<AppDispatch>();
+  
+  const deleteCategoryHandler = () => {
+
+
+    dispatch(deleteCategory(category?.id as string))
+    router.back()
+
+  }
+
   return (
     <DashboardLayout>
       <Head>
@@ -39,7 +51,7 @@ const SubCategories = () => {
               <div className="h-48 grid grid-cols-3 gap-6 mb-10">
                 <ShortcutBox label='لیست کالاها' icon='archive' link='list/مصالح-مصرفی-کارگاه' />
                 <ShortcutBox label='ویرایش دسته' icon='pencil-square' link={`edit/${category.id}`} />
-                <ShortcutBox label='حذف دسته' icon='trash' iconColor="rose-400" link='/' />
+                <ShortcutBoxBtn label='حذف دسته' icon='trash' iconColor="rose-400" action={deleteCategoryHandler} />
               </div>
 
             </header>
