@@ -46,12 +46,7 @@ export default function Products({ categoryLabel }: {
 
                     {
                         products.map((item) => {
-                            let unit1: string = (units.find((unit) => { return unit.id === item.unitId }))?.name as string;
-                            let unit2: string = 'ندارد';
-                            if (item.secondaryUnitId) {
-                                unit2 = (units.find((unit) => { return unit.id === item.unitId }))?.name as string;
-                            }
-                            return <ProductItem name={item.name} primaryUnit={unit1} secondaryUnit={unit2} amount={0} link={`/dashboard/products/list/${item.id}`} />
+                            return <ProductItem name={item.name} primaryUnit={item.unit} secondaryUnit={item.secondaryUnit ?? 'ندارد'} amount={0} link={`/dashboard/products/list/edit/${item.id}`} />
                         })
                     }
                 </>

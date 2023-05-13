@@ -11,19 +11,19 @@ export const productsSlice = createSlice({
     addProduct : (state, action: PayloadAction<Product>) => {
       state.push(action.payload)
     },
-    // updateUnit : (state, action: PayloadAction<{unit: Partial<Unit>, key: string}>) => {
-    //   const { unit, key } = action.payload
-    //   return state.map((item: Unit) => {
-    //     return item.name === key ? {... item, ...unit} : item;
-    //   })
-    // },
-    // deleteUnit : (state, action: PayloadAction<string>) => {
-    //   return state.filter((unit: Unit) => unit.name !== action.payload)
-    // }
+    updateProduct : (state, action: PayloadAction<Partial<Product>>) => {
+      const product = action.payload
+      return state.map((item: Product) => {
+        return item.id === product.id ? {... item, ...product} : item;
+      })
+    },
+    deleteProduct : (state, action: PayloadAction<string>) => {
+      return state.filter((product: Product) => product.id !== action.payload)
+    }
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { addProduct } = productsSlice.actions
+export const { addProduct, updateProduct, deleteProduct } = productsSlice.actions
 
 export default productsSlice.reducer

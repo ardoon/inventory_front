@@ -8,25 +8,19 @@ export default function TextInputDynamic({ id, label, colSpan, placeHolder, isDi
     value?: string,
     inputHandler?: Function
 }) {
-
+    
     let listId;
 
     if (data)
-        listId = 'list'
-
-    const handler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    listId = 'list'
+    
+    const handler = (e: any) => {
         let value = e.target.value
 
-        if (data) {
-            data.forEach((item) => {
-                if (item.id === value) {
-                    e.target.value = item.name
-                }
-            })
+        if (inputHandler) {
+            inputHandler(id, value)
         }
 
-        if (inputHandler)
-            inputHandler(id, value)
     }
 
     return (
@@ -34,6 +28,7 @@ export default function TextInputDynamic({ id, label, colSpan, placeHolder, isDi
             <label className='text-slate-300 text-sm' htmlFor={id}>{label}</label>
             <input
                 onChange={(e) => handler(e)}
+                onClick={(e) => handler(e)}
                 id={id}
                 type='text'
                 list={listId}
@@ -46,7 +41,7 @@ export default function TextInputDynamic({ id, label, colSpan, placeHolder, isDi
                         <datalist id='list' className="bg-yellow">
 
                             {data?.map((item, index) => {
-                                return <option key={index} value={item.id} className="bg-yellow">{item.name}</option>
+                                return <option key={index} value={item.name} className="bg-yellow">{item.name}</option>
                             })}
 
                         </datalist>
