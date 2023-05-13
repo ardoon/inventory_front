@@ -1,5 +1,5 @@
 import DashboardLayout from "@/components/layouts/dashboard"
-import Sections from "@/components/sections/sections"
+import SubSections from "@/components/sections/sub-section"
 import Head from "next/head"
 import { useTranslation } from "react-i18next"
 
@@ -13,7 +13,7 @@ const Section = () => {
         <title>{`SamCity | ${t('head.title', { context: 'products' })}`}</title>
       </Head>
 
-      <Sections title="زیر دسته های ..." />
+      <SubSections />
 
     </DashboardLayout>
   )
