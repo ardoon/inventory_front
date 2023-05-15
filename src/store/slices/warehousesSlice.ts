@@ -11,14 +11,14 @@ export const warehousesSlice = createSlice({
     addWarehouse : (state, action: PayloadAction<Warehouse>) => {
       state.push(action.payload)
     },
-    updateWarehouse : (state, action: PayloadAction<{warehouse: Partial<Warehouse>, key: string}>) => {
-      const { warehouse, key } = action.payload
+    updateWarehouse : (state, action: PayloadAction<Partial<Warehouse>>) => {
+      const warehouse = action.payload
       return state.map((item: Warehouse) => {
-        return item.name === key ? {... item, ...warehouse} : item;
+        return item.id === warehouse.id ? {... item, ...warehouse} : item;
       })
     },
     deleteWarehouse : (state, action: PayloadAction<string>) => {
-      return state.filter((unit: Warehouse) => unit.name !== action.payload)
+      return state.filter((warehouse: Warehouse) => warehouse.id !== action.payload)
     }
   },
 })
