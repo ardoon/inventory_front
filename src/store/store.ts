@@ -4,6 +4,7 @@ import unitReducer from './slices/unitsSlice'
 import categoriesReducer from './slices/categoriesSlice'
 import sectionsReducer from './slices/sectionsSlice'
 import warehousesReducer from './slices/warehousesSlice'
+import usersReducer from './slices/usersSlice'
 
 export const store = configureStore({
   reducer: {
@@ -11,7 +12,8 @@ export const store = configureStore({
     units: unitReducer,
     categories: categoriesReducer,
     sections: sectionsReducer,
-    warehouses: warehousesReducer
+    warehouses: warehousesReducer,
+    users: usersReducer
   },
 })
 

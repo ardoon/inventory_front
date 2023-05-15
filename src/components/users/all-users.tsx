@@ -1,9 +1,29 @@
+import { RootState } from "@/store/store";
 import Link from "next/link";
+import { useSelector } from "react-redux";
 import UserItem from "./user-item";
 
 export default function AllUsers({ title }: {
     title?: string
 }) {
+
+    const access = [
+        {name: 'مدیر', key: 'admin'},
+        {name: 'انباردار', key: 'manager'},
+        {name: 'عادی', key: 'normal'},
+      ]
+
+    const users = useSelector((state: RootState) => state.users)
+
+    function getType(key: string) {
+        let value: string = 'نا معلوم';
+        access.forEach(item => {
+            if(item.key === key) {
+                value = item.name
+            }
+        })
+        return value
+    }
 
     return (
         <section className="w-full text-gray-300 space-y-6">
@@ -13,10 +33,12 @@ export default function AllUsers({ title }: {
                 افزودن کاربر جدید
             </Link>
 
-            <UserItem name='چیا کیانی' access="مدیر" role="انباردار" phone="09181730076" link="/" />
-            <UserItem name='چیا کیانی' access="مدیر" role="انباردار" phone="09181730076" link="/" />
-            <UserItem name='چیا کیانی' access="مدیر" role="انباردار" phone="09181730076" link="/" />
-            <UserItem name='چیا کیانی' access="مدیر" role="انباردار" phone="09181730076" link="/" />
+            {
+                users.map((user) => {
+                    return <UserItem key={user.id} name={user.name} access={getType(user.type)} role={user.role} phone={user.mobile ?? 'ندارد'} link={`/dashboard/users/${user.id}`} />
+                })
+            }
+            
 
         </section>
     )
