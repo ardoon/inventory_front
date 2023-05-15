@@ -35,7 +35,7 @@ export default function AllUsers({ title }: {
 
             {
                 users.map((user) => {
-                    return <UserItem key={user.id} name={user.name} access={getType(user.type)} role={user.role} phone={user.mobile ?? 'ندارد'} link={`/dashboard/users/${user.id}`} />
+                    return <UserItem key={user.id} name={user.name} access={getType(user.type)} role={user.role} phone={user.mobile ?? 'ندارد'} link={`/dashboard/users/edit/${user.id}`} />
                 })
             }
             
