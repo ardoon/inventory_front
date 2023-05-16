@@ -8,13 +8,10 @@ import { AppDispatch, RootState } from "@/store/store"
 import Head from "next/head"
 import { useRouter } from "next/router"
 import { FormEvent, useState } from "react"
-import { useTranslation } from "react-i18next"
 import { useDispatch, useSelector } from "react-redux"
 import { v4 as uuidv4 } from 'uuid';
 
 const NewProduct = () => {
-
-  const { t } = useTranslation(['dashboard'])
 
   const router = useRouter();
 
@@ -51,7 +48,7 @@ const NewProduct = () => {
   return (
     <DashboardLayout>
       <Head>
-        <title>{`SamCity | ${t('head.title', { context: 'products' })}`}</title>
+        <title>{`SamCity | افزودن کالا`}</title>
       </Head>
 
       <SectionHeading title="افزودن کالای جدید" backward />

@@ -2,11 +2,8 @@ import DashboardLayout from "@/components/layouts/dashboard"
 import SectionHeading from "@/components/partials/dashboard/section-heading"
 import TransactionsRow from "@/components/partials/dashboard/transactions-row"
 import Head from "next/head"
-import { useTranslation } from "react-i18next"
 
 const Entries = () => {
-
-  const { t } = useTranslation(['dashboard'])
 
   return (
     <DashboardLayout>

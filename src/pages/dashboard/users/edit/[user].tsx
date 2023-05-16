@@ -8,12 +8,9 @@ import { AppDispatch, RootState } from "@/store/store"
 import Head from "next/head"
 import { useRouter } from "next/router"
 import { FormEvent, useState } from "react"
-import { useTranslation } from "react-i18next"
 import { useDispatch, useSelector } from "react-redux"
 
 const EditUser = () => {
-
-  const { t } = useTranslation(['dashboard'])
 
   const access = [
     { name: 'مدیر', key: 'admin' },
@@ -70,17 +67,17 @@ const EditUser = () => {
   return (
     <DashboardLayout>
       <Head>
-        <title>{`SamCity | ${t('head.title', { context: 'products' })}`}</title>
+        <title>{`SamCity | ویرایش کاربر`}</title>
       </Head>
 
       <SectionHeading title="ویرایش کاربر" />
 
       <form className="grid grid-cols-2 gap-4">
 
-        <TextInputDynamic inputHandler={inputHandler} id="name" value={user.name} label="نام کاربر" colSpan={1} />
-        <TextInputDynamic inputHandler={inputHandler} id="type" value={getType(user.type)} label="دسترسی" colSpan={1} data={access} />
-        <TextInputDynamic inputHandler={inputHandler} id="role" value={user.role} label="نفش" colSpan={1} />
-        <TextInputDynamic inputHandler={inputHandler} id="mobile" value={user.mobile} label="موبایل" colSpan={1} placeHolder='این فیلد اختیاری است' />
+        <TextInputDynamic inputHandler={inputHandler} id="name" value={user?.name} label="نام کاربر" colSpan={1} />
+        <TextInputDynamic inputHandler={inputHandler} id="type" value={getType(user?.type)} label="دسترسی" colSpan={1} data={access} />
+        <TextInputDynamic inputHandler={inputHandler} id="role" value={user?.role} label="نفش" colSpan={1} />
+        <TextInputDynamic inputHandler={inputHandler} id="mobile" value={user?.mobile} label="موبایل" colSpan={1} placeHolder='این فیلد اختیاری است' />
 
         <button onClick={(e) => update(e)} type="submit" className="bg-indigo-600 hover:bg-indigo-700 rounded-md h-12 col-span-1 mt-4">ثبت تغییرات</button>
         <button onClick={(e) => remove(e)} type="submit" className="bg-rose-600 hover:bg-rose-700 rounded-md h-12 col-span-1 mt-4">حذف کاربر</button>

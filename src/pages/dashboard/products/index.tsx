@@ -3,16 +3,13 @@ import ShortcutBox from "@/components/partials/dashboard/shortcut-box"
 import TextInput from "@/components/partials/dashboard/TextInput"
 import Categories from "@/components/products/categories"
 import Head from "next/head"
-import { useTranslation } from "react-i18next"
 
 const Products = () => {
-
-  const { t } = useTranslation(['dashboard'])
 
   return (
     <DashboardLayout>
       <Head>
-        <title>{`SamCity | ${t('head.title', { context: 'products' })}`}</title>
+        <title>{`SamCity | دسته ها`}</title>
       </Head>
 
       <header className="h-48 grid grid-cols-4 gap-6 mb-10">

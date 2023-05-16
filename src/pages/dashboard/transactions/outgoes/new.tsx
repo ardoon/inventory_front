@@ -2,15 +2,12 @@ import DashboardLayout from "@/components/layouts/dashboard"
 import SectionHeading from "@/components/partials/dashboard/section-heading"
 import TextInput from "@/components/partials/dashboard/TextInput"
 import Head from "next/head"
-import { useTranslation } from "react-i18next"
 import DatePicker from "react-multi-date-picker";
 import jalali from "react-date-object/calendars/jalali"
 import persian_fa from "react-date-object/locales/persian_fa"
 import { useEffect, useState } from "react"
 
 const NewOutgo = () => {
-
-  const { t } = useTranslation(['dashboard'])
 
   const [hasMounted, setHasMounted] = useState(false);
 
@@ -47,7 +44,7 @@ const NewOutgo = () => {
   return (
     <DashboardLayout>
       <Head>
-        <title>{`SamCity | ${t('head.title', { context: 'products' })}`}</title>
+        <title>{`SamCity | ثبت خروجی جدید`}</title>
       </Head>
 
       <SectionHeading title="ثبت خروج جدید" backward={true} />

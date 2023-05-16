@@ -4,11 +4,9 @@ import TextInput from "@/components/partials/dashboard/TextInput"
 import Unit from "@/models/unit"
 import { deleteUnit, updateUnit } from "@/store/slices/unitsSlice"
 import { AppDispatch, RootState } from "@/store/store"
-import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 import Head from "next/head"
 import { useRouter } from "next/router"
 import { useState } from "react"
-import { useTranslation } from "react-i18next"
 import { useDispatch, useSelector } from "react-redux"
 
 const EditUnit = () => {
@@ -26,8 +24,6 @@ const EditUnit = () => {
       unit = item
     }
   })
-
-  const { t } = useTranslation(['dashboard'])
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -68,7 +64,7 @@ const EditUnit = () => {
   return (
     <DashboardLayout>
       <Head>
-        <title>{`SamCity | ${t('head.title', { context: 'products' })}`}</title>
+        <title>{`SamCity | ویرایش واحد`}</title>
       </Head>
 
       <SectionHeading title={`ویرایش ${urlName}`} backward={true} />

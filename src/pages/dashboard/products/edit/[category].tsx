@@ -7,12 +7,9 @@ import { AppDispatch, RootState } from "@/store/store"
 import Head from "next/head"
 import { useRouter } from "next/router"
 import { useState } from "react"
-import { useTranslation } from "react-i18next"
 import { useDispatch, useSelector } from "react-redux"
 
 const EditSubCategories = () => {
-
-  const { t } = useTranslation(['dashboard'])
 
   const router = useRouter();
 

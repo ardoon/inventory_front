@@ -6,12 +6,9 @@ import { AppDispatch, RootState } from "@/store/store"
 import Head from "next/head"
 import { useRouter } from "next/router"
 import { FormEvent, useState } from "react"
-import { useTranslation } from "react-i18next"
 import { useDispatch, useSelector } from "react-redux"
 
 const EditWarehouse = () => {
-
-  const { t } = useTranslation(['dashboard'])
 
   const router = useRouter();
   const warehouseId = router.query.warehouse;
@@ -44,7 +41,7 @@ const EditWarehouse = () => {
   return (
     <DashboardLayout>
       <Head>
-        <title>{`SamCity | ${t('head.title', { context: 'products' })}`}</title>
+        <title>{`SamCity | ویرایش انبار`}</title>
       </Head>
 
       <SectionHeading title="ویرایش انبار" />

@@ -3,11 +3,8 @@ import RecentTransactionsRow from "@/components/partials/dashboard/recent-transa
 import SectionHeading from "@/components/partials/dashboard/section-heading"
 import ShortcutBox from "@/components/partials/dashboard/shortcut-box"
 import Head from "next/head"
-import { useTranslation } from "react-i18next"
 
 const Transactions = () => {
-
-  const { t } = useTranslation(['dashboard'])
 
   return (
     <DashboardLayout>

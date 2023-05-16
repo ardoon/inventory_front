@@ -1,13 +1,11 @@
 import DashboardLayout from "@/components/layouts/dashboard"
 import SectionHeading from "@/components/partials/dashboard/section-heading"
 import TextInput from "@/components/partials/dashboard/TextInput"
-import Section from "@/models/section"
 import { updateSection } from "@/store/slices/sectionsSlice"
 import { AppDispatch, RootState } from "@/store/store"
 import Head from "next/head"
 import { useRouter } from "next/router"
-import { ChangeEvent, useState } from "react"
-import { useTranslation } from "react-i18next"
+import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
 const EditSection = () => {

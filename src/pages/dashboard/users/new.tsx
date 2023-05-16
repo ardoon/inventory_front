@@ -7,13 +7,10 @@ import { AppDispatch } from "@/store/store"
 import Head from "next/head"
 import { useRouter } from "next/router"
 import { FormEvent, useState } from "react"
-import { useTranslation } from "react-i18next"
 import { useDispatch } from "react-redux"
 import { v4 as uuidv4 } from 'uuid';
 
 const NewUser = () => {
-
-  const { t } = useTranslation(['dashboard'])
 
   const router = useRouter();
 
@@ -58,7 +55,7 @@ const NewUser = () => {
   return (
     <DashboardLayout>
       <Head>
-        <title>{`SamCity | ${t('head.title', { context: 'products' })}`}</title>
+        <title>{`SamCity | افزودن کاربر`}</title>
       </Head>
 
       <SectionHeading title="افزودن کاربر" backward />

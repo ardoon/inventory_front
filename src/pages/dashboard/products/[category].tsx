@@ -8,12 +8,9 @@ import { deleteCategory } from "@/store/slices/categoriesSlice"
 import { AppDispatch, RootState } from "@/store/store"
 import Head from "next/head"
 import { useRouter } from "next/router"
-import { useTranslation } from "react-i18next"
 import { useDispatch, useSelector } from "react-redux"
 
 const SubCategories = () => {
-
-  const { t } = useTranslation()
 
   const router = useRouter();
 

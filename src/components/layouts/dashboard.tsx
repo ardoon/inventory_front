@@ -1,4 +1,4 @@
-import { TFunction, useTranslation } from 'next-i18next';
+import { useTranslation } from 'next-i18next';
 import { ReactNode } from 'react'
 import Sidebar from '../partials/sidebar/sidebar'
 
