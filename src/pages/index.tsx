@@ -4,7 +4,7 @@ import AuthLayout from '@/components/layouts/auth'
 import AuthInput from '@/components/partials/form-elements/auth-input'
 import callApi from '@/helpers/callApi'
 import { FormEvent } from 'react'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 
 const Home = () => {
 

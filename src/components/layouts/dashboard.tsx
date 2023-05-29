@@ -1,8 +1,9 @@
 import { useTranslation } from 'next-i18next';
-import { ReactNode } from 'react'
+import { ReactNode, useEffect } from 'react'
 import Sidebar from '../partials/sidebar/sidebar'
-import useAuth from '@/hooks/useAuth';
 import { useRouter } from 'next/router';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
 
 export default function DashboardLayout({ children }: {
     children: ReactNode,
@@ -12,12 +13,13 @@ export default function DashboardLayout({ children }: {
 
     const router = useRouter();
 
-    const { user, error, loading } = useAuth();
+    useEffect(() => {
+        const user = useSelector((state: RootState) => state.auth.user);
 
-    if(error) {
-        router.push('/')
-        return <></>
-    }
+        if(!user) {
+            router.push('/')
+        }
+    })
 
     return (
         <main className='grid grid-cols-5 text-slate-300'>
