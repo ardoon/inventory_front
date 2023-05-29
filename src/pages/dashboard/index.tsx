@@ -3,11 +3,14 @@ import RecentTransactionsRow from "@/components/partials/dashboard/recent-transa
 import SectionHeading from "@/components/partials/dashboard/section-heading"
 import ShortcutBox from "@/components/partials/dashboard/shortcut-box"
 import Head from "next/head"
+import { useRouter } from "next/router"
 import { useTranslation } from "react-i18next"
 
 const Dashboard = () => {
 
   const { t } = useTranslation(['dashboard'])
+
+  const router = useRouter();
 
   return (
     <DashboardLayout>

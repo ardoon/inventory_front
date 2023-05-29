@@ -1,12 +1,23 @@
 import { useTranslation } from 'next-i18next';
 import { ReactNode } from 'react'
 import Sidebar from '../partials/sidebar/sidebar'
+import useAuth from '@/hooks/useAuth';
+import { useRouter } from 'next/router';
 
 export default function DashboardLayout({ children }: {
     children: ReactNode,
 }) {
 
     const { t } = useTranslation('sidebar')
+
+    const router = useRouter();
+
+    const { user, error, loading } = useAuth();
+
+    if(error) {
+        router.push('/')
+        return <></>
+    }
 
     return (
         <main className='grid grid-cols-5 text-slate-300'>

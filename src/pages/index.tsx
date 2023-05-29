@@ -2,10 +2,24 @@ import { useTranslation } from 'next-i18next'
 import Head from 'next/head'
 import AuthLayout from '@/components/layouts/auth'
 import AuthInput from '@/components/partials/form-elements/auth-input'
+import callApi from '@/helpers/callApi'
+import { FormEvent } from 'react'
+import { useRouter } from 'next/router'
 
 const Home = () => {
 
   const { t } = useTranslation(['auth', 'errorMessages'])
+
+  const router = useRouter();
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    const res = await callApi().post('/auth/login', {
+      "mobile": "09185335318",
+      "password": "123456"
+    })
+    router.push('/dashboard')
+  }
 
   return (
     <AuthLayout>
@@ -35,7 +49,7 @@ const Home = () => {
               <input type="checkbox" id='remember' className='bg-slate-900 border-0 focus-within:hidden rounded-md rtl:ml-2 ltr:mr-2 w-5 h-5' />
             </div>
             <div className='w-2/3 mx-auto'>
-              <button className='bg-indigo-600 w-full h-12 rounded-md'>{t('login.input', { context: 'submitBtn' })}</button>
+              <button type='submit' onClick={e => handleSubmit(e)} className='bg-indigo-600 w-full h-12 rounded-md'>{t('login.input', { context: 'submitBtn' })}</button>
             </div>
 
             <div className='w-2/3 mx-auto'>
