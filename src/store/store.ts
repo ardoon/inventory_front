@@ -5,9 +5,11 @@ import categoriesReducer from './slices/categoriesSlice'
 import sectionsReducer from './slices/sectionsSlice'
 import warehousesReducer from './slices/warehousesSlice'
 import usersReducer from './slices/usersSlice'
+import authSlice from './slices/authSlice'
 
 export const store = configureStore({
   reducer: {
+    auth: authSlice,
     products: productsSlice,
     units: unitReducer,
     categories: categoriesReducer,
