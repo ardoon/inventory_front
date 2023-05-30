@@ -1,23 +1,24 @@
 import Section from "@/models/section";
-import { addSection } from "@/store/slices/sectionsSlice";
-import { AppDispatch, RootState } from "@/store/store";
-import { useDispatch, useSelector } from "react-redux";
 import ListItem from "../partials/dashboard/list-item";
 import ListItemInput from "../partials/dashboard/list-item-input";
 import SectionHeading from "../partials/dashboard/section-heading";
+import useSWR from 'swr';
+import { CreateSection, GetSections } from '../../services/section';
 
 export default function Sections({ title }: {
     title?: string
 }) {
 
-    const dispatch = useDispatch<AppDispatch>();
+    const {data: sections, error, mutate} = useSWR({url: '/dashboard/sections'}, GetSections)
+    const loadingItems = !sections && !error;  
 
-    const sections = useSelector((state: RootState) =>
-        state.sections.filter(section => section.parentId === undefined)
-    )    
-
-    const add = (section: Section) => {        
-        dispatch(addSection(section));
+    const add = async (section: Section) => {        
+        try {
+            await CreateSection(section);
+            await mutate();
+        } catch(err) {
+            console.log(err);
+        }
     }
 
     return (
@@ -28,7 +29,10 @@ export default function Sections({ title }: {
                 <>
                     <ListItemInput id="sectionName" add={add} placeHolder="نام بخش جدید را وارد کنید.." />
                     {
-                        sections.map((item) => {
+                        loadingItems
+                        ? <h1>Loading..</h1>
+                        :
+                        sections.map((item: Section) => {
                             return <ListItem key={item.id} label={item.name} link='/dashboard/sections/' slug='[section]' id={item.id} />
                         })
                     }
