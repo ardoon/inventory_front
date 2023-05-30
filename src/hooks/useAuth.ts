@@ -3,11 +3,13 @@ import useSWR from "swr";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/store/store";
 import { updateUser } from "@/store/slices/authSlice";
+import { useAppDispatch } from ".";
 
-const useAuth = async () => {
-    const dispatch = useDispatch<AppDispatch>();
+const useAuth = () => {
+    const dispatch = useAppDispatch();
+    
     const { data, error } = useSWR('user_me', async() => {
-        return  await callApi().get('/auth/check')
+        return callApi().get('/auth/check')
     })
 
     dispatch(updateUser(data?.data))

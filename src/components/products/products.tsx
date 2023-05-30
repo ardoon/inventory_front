@@ -3,7 +3,6 @@ import Unit from "@/models/unit"
 import { RootState } from "@/store/store"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { useTranslation } from "react-i18next"
 import { useSelector } from "react-redux"
 import SectionHeading from "../partials/dashboard/section-heading"
 import ProductItem from "./product-item"
@@ -11,8 +10,6 @@ import ProductItem from "./product-item"
 export default function Products({ categoryLabel }: {
     categoryLabel: string
 }) {
-
-    const { t } = useTranslation()
 
     const router = useRouter();
 

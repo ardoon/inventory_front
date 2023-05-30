@@ -4,6 +4,7 @@ import Sidebar from '../partials/sidebar/sidebar'
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
+import useAuth from '@/hooks/useAuth';
 
 export default function DashboardLayout({ children }: {
     children: ReactNode,
@@ -13,13 +14,12 @@ export default function DashboardLayout({ children }: {
 
     const router = useRouter();
 
-    useEffect(() => {
-        const user = useSelector((state: RootState) => state.auth.user);
+    const {user, error, loading} = useAuth();
 
-        if(!user) {
-            router.push('/')
-        }
-    })
+    if(error) {
+        router.push('/');
+        return <></>;
+    }
 
     return (
         <main className='grid grid-cols-5 text-slate-300'>
