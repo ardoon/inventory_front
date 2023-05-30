@@ -8,6 +8,9 @@ export const unitsSlice = createSlice({
   name: 'units',
   initialState,
   reducers: {
+    setUnits: (state, action: PayloadAction<Unit[]>) => {
+      state = action.payload;
+    },
     addUnit : (state, action: PayloadAction<Unit>) => {
       state.push(action.payload)
     },
@@ -24,6 +27,6 @@ export const unitsSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { addUnit, updateUnit, deleteUnit } = unitsSlice.actions
+export const { setUnits, addUnit, updateUnit, deleteUnit } = unitsSlice.actions
 
 export default unitsSlice.reducer

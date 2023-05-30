@@ -1,10 +1,11 @@
 import Link from "next/link"
+import { KeyedMutator } from "swr"
 
 export default function ListItem({ label, link, slug, id }: {
     label: string,
     link: string,
     slug: string,
-    id: string
+    id: string,
 }) {
     return (
         <>

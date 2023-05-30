@@ -1,39 +1,41 @@
 import DashboardLayout from "@/components/layouts/dashboard"
 import SectionHeading from "@/components/partials/dashboard/section-heading"
 import TextInput from "@/components/partials/dashboard/TextInput"
+import callApi from "@/helpers/callApi"
 import Unit from "@/models/unit"
 import { deleteUnit, updateUnit } from "@/store/slices/unitsSlice"
 import { AppDispatch, RootState } from "@/store/store"
 import Head from "next/head"
 import { useRouter } from "next/router"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import useSWR from 'swr';
 
 const EditUnit = () => {
 
   const router = useRouter()
 
-  const urlName: string = router.query.unit as string
+  const urlId: string = router.query.unit as string
 
   const units = useSelector((state: RootState) => state.units)
 
-  let unit: Unit | undefined;
-
-  units.forEach((item) => {
-    if (item.name === urlName) {
-      unit = item
-    }
-  })
-
   const dispatch = useDispatch<AppDispatch>();
 
-  const [unitName, setUnitName] = useState<string>(urlName);
+  const [unit, setUnit] = useState<Unit | undefined>();
+
+  useEffect(() => {
+    callApi().get(`/units/${urlId}`).then((res) => {
+      setUnit(res.data);
+    });
+  },[]);
+
+  const [unitName, setUnitName] = useState<string | undefined>(unit?.name);
 
   const inputHandler = (name: string) => {
     setUnitName(name)
   }
 
-  const updateUnitHandler = (e: React.FormEvent) => {
+  const updateUnitHandler = async (e: React.FormEvent) => {
 
     e.preventDefault();
 
@@ -41,21 +43,26 @@ const EditUnit = () => {
       name: unitName
     }
 
-    // API call
-
-    dispatch(updateUnit({unit, key: urlName}))
-
-    router.push('/dashboard/products/units')
+    try {
+      await callApi().patch(`/units/${urlId}`, {
+        name: unitName
+      })
+      router.push('/dashboard/products/units')
+    } catch (err) {
+      console.log(err);
+    }
 
   }
 
-  const deleteUnitHandler = (e: React.FormEvent, name: string | undefined) => {
+  const deleteUnitHandler = async (e: React.FormEvent, name: string | undefined) => {
 
     e.preventDefault();
 
-    if (name !== undefined) {
-      dispatch(deleteUnit(name))
+    try {
+      await callApi().delete(`/units/${urlId}`)
       router.push('/dashboard/products/units')
+    } catch (err) {
+      console.log(err);
     }
 
 
@@ -67,14 +74,14 @@ const EditUnit = () => {
         <title>{`SamCity | ویرایش واحد`}</title>
       </Head>
 
-      <SectionHeading title={`ویرایش ${urlName}`} backward={true} />
+      <SectionHeading title={`ویرایش ${unit?.name}`} backward={true} />
 
       {
         unit ?
 
           <form className="grid grid-cols-6 gap-4">
 
-            <TextInput id="productName" label="نام واحد" colSpan={3} value={unitName} inputHandler={inputHandler} />
+            <TextInput id="productName" label="نام واحد" colSpan={3} value={unitName} defaultValue={unit?.name} inputHandler={inputHandler} />
 
             <button onClick={(e) => updateUnitHandler(e)} type="submit" className="bg-indigo-600 hover:bg-indigo-700 rounded-md h-12 col-span-1 self-end">اعمال تغییرات</button>
             <span onClick={(e) => deleteUnitHandler(e, unit?.name)} className="bg-rose-600 flex justify-center items-center hover:bg-rose-700 cursor-pointer rounded-md h-12 col-span-1 self-end">حذف واحد</span>

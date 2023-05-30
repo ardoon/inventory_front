@@ -1,4 +1,4 @@
-export default function TextInput({ id, label, colSpan, placeHolder, isDisable, data, value, inputHandler }: {
+export default function TextInput({ id, label, colSpan, placeHolder, isDisable, data, value, defaultValue, inputHandler }: {
     id: string,
     label: string,
     colSpan: number,
@@ -6,6 +6,7 @@ export default function TextInput({ id, label, colSpan, placeHolder, isDisable, 
     isDisable?: boolean,
     data?: Array<string>,
     value?: string,
+    defaultValue?: string,
     inputHandler?: Function
 }) {
 
@@ -28,6 +29,7 @@ export default function TextInput({ id, label, colSpan, placeHolder, isDisable, 
                 type='text'
                 list={listId}
                 value={value}
+                defaultValue={defaultValue}
                 placeholder={placeHolder}
                 disabled={isDisable}
                 className={`h-12 border-0 text-slate-300 text-sm w-full rounded-md block bg-slate-800 focus:ring-0 px-4`} />            {
