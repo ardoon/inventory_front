@@ -1,85 +1,59 @@
 import DashboardLayout from "@/components/layouts/dashboard"
 import SectionHeading from "@/components/partials/dashboard/section-heading"
 import TextInput from "@/components/partials/dashboard/TextInput"
+import callApi from "@/helpers/callApi"
 import Category from "@/models/category"
-import { editCategory } from "@/store/slices/categoriesSlice"
-import { AppDispatch, RootState } from "@/store/store"
+import Section from "@/models/section"
 import Head from "next/head"
 import { useRouter } from "next/router"
-import { useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import { useEffect, useState } from "react"
 
-const EditSubCategories = () => {
+const EditCategory = () => {
 
   const router = useRouter();
+  
+  const [category, setCategory] = useState<Partial<Category> | undefined>();
+  const [state, setState] = useState<string | undefined>()
+  
+  useEffect(() => {
+    callApi().get(`/categories/${router.query.category}`).then((res) => {
+      setCategory(res.data);
+      setState(res.data.name);
+    });
+  },[router.query.category]);
 
-  const categories: Category[] = useSelector((state: RootState) =>
-    state.categories
-  )
-
-  const category = categories.find((cate) => cate.id === router.query.category)
-
-  const dispatch = useDispatch<AppDispatch>();
-
-  let prevCategoryName: string = ''
-
-  if(category) {
-    prevCategoryName = category.name
-  }
-
-  const [categoryName, setCategoryName] = useState<string>(prevCategoryName);
-
-  const inputHandler = (name: string) => {
-    setCategoryName(name)
-  }
-
-  const updateCategoryHandler = (e: React.FormEvent) => {
-
+  const update = async (e: any) => {
     e.preventDefault();
-
-    let cate = {
-      id: router.query.category as string,
-      name: categoryName
+    try {
+      await callApi().patch(`/categories/${router.query.category}`, {...category, name: state})
+      router.back()
+    } catch (err) {
+      console.log(err);
     }
+  }
 
-    // API call
-
-    dispatch(editCategory(cate))
-
-    router.back()
-
+  function inputHandler(name: string) {
+    setState(name);
   }
 
   return (
     <DashboardLayout>
-      {
-        category ?
-          <>
-            <Head>
-              <title>{`SamCity | ${category.name}`}</title>
-            </Head>
+      <Head>
+        <title>{`SamCity | ویرایش ${category?.name}`}</title>
+      </Head>
 
-            <section className="mb-10">
-              <SectionHeading title={`ویرایش ${category.name}`} backward />
+      <section className="mb-10">
+        <SectionHeading title={`ویرایش ${category?.name}`} backward />
+        <form className="grid grid-cols-6 gap-4">
+          <TextInput id='categoryName' label='نام دسته' defaultValue={category?.name} value={state} inputHandler={inputHandler} colSpan={4} />
+          <button onClick={(e) => update(e)} type="submit" className="bg-indigo-600 h-12 self-end rounded-md">ذخیره</button>
+        </form>
 
-              <form className="grid grid-cols-6 gap-4">
-                <TextInput id='categoryName' label='نام دسته' colSpan={4} value={categoryName} inputHandler={inputHandler} />
-                <button onClick={(e) => updateCategoryHandler(e)} type="submit" className="bg-indigo-600 h-12 self-end rounded-md">ذخیره</button>
-              </form>
-
-            </section>
-          </>
-          :
-          <div className="flex justify-between">
-            <p>دسته مورد نظر موجود نیست</p>
-            <i onClick={() => router.back()} className={`bi ${ router.locale === 'en' ? 'bi-arrow-right': 'bi-arrow-left'} text-3xl cursor-pointer hover:text-indigo-400`}></i>
-          </div>
-      }
-
+      </section>
 
     </DashboardLayout>
   )
 
 }
 
-export default EditSubCategories;
+export default EditCategory;
