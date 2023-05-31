@@ -1,13 +1,14 @@
 import Section from "@/models/section";
-import { addSection, deleteSection } from "@/store/slices/sectionsSlice";
-import { AppDispatch, RootState } from "@/store/store";
 import { useRouter } from "next/router";
-import { useDispatch, useSelector } from "react-redux";
 import ListItem from "../partials/dashboard/list-item";
 import ListItemInput from "../partials/dashboard/list-item-input";
 import SectionHeading from "../partials/dashboard/section-heading";
 import ShortcutBox from "../partials/dashboard/shortcut-box";
 import ShortcutBoxBtn from "../partials/dashboard/shortcut-boxBtn";
+import { useEffect, useState } from "react";
+import callApi from "@/helpers/callApi";
+import useSWR, { mutate } from 'swr';
+
 
 export default function SubSections({ title }: {
     title?: string
@@ -15,29 +16,32 @@ export default function SubSections({ title }: {
 
     const router = useRouter();
 
-    const dispatch = useDispatch<AppDispatch>();
-
-    const sections = useSelector((state: RootState) =>
-        state.sections
-    )
-
-    const subSections = sections.filter(item => item.parentId === router.query.section)
-
-    const section = sections.find((item) => {
-        return item.id === router.query.section
+    const {data: sections, error, mutate} = useSWR({url: '/dashboard/sections'}, async () => {
+        const res = (await callApi().get(`/sections?parentId=${router.query.section}`)).data;
+        return res as Section[];
     })
+    const loadingItems = !sections && !error;
 
-    const add = (section: Section) => {
-        dispatch(addSection({
-            ...section,
-            parentId: router.query.section as string
-        }));
+    const [section, setSection] = useState<Section | undefined>();
+    useEffect(() => {
+        callApi().get(`/sections/${router.query.section}`).then((res) => {
+          setSection(res.data);
+          mutate();
+        });
+      },[router.query.section]);
+
+    const add = async (section: Section) => {
+        await callApi().post(`/sections`, {...section, parentId: parseInt(router.query.section as string)});
+        await mutate();
     }
 
-    const remove = () => {
-        if(section)
-            dispatch(deleteSection(section.id))
-        router.back();
+    const remove = async () => {
+        try {
+          await callApi().delete(`/sections/${router.query.section}`)
+          router.back()
+        } catch (err) {
+          console.log(err);
+        }
     }
 
     return (
@@ -54,7 +58,7 @@ export default function SubSections({ title }: {
 
                 <ListItemInput id="categoryName" add={add} placeHolder="نام بخش جدید را وارد کنید.." />
 
-                {subSections.map(item => <ListItem label={item.name} link='/dashboard/sections/' slug='[section]' id={item.id} />)}
+                {loadingItems ? <p>Loading..</p> : sections?.map((item: Section) => <ListItem label={item.name} link='/dashboard/sections/' slug='[section]' id={item.id} disableAsLink />)}
 
             </ul>
         </section>

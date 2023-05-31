@@ -4,6 +4,7 @@ import ListItemInput from "../partials/dashboard/list-item-input";
 import SectionHeading from "../partials/dashboard/section-heading";
 import useSWR from 'swr';
 import { CreateSection, GetSections } from '../../services/section';
+import { useEffect } from "react";
 
 export default function Sections({ title }: {
     title?: string
@@ -11,6 +12,10 @@ export default function Sections({ title }: {
 
     const {data: sections, error, mutate} = useSWR({url: '/dashboard/sections'}, GetSections)
     const loadingItems = !sections && !error;  
+
+    useEffect(() => {
+        mutate();
+    });
 
     const add = async (section: Section) => {        
         try {
