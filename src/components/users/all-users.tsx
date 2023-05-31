@@ -1,7 +1,8 @@
-import { RootState } from "@/store/store";
 import Link from "next/link";
-import { useSelector } from "react-redux";
 import UserItem from "./user-item";
+import useSWR from 'swr';
+import { GetUsers } from "@/services/user";
+import User from "@/models/user";
 
 export default function AllUsers({ title }: {
     title?: string
@@ -13,7 +14,8 @@ export default function AllUsers({ title }: {
         {name: 'عادی', key: 'normal'},
       ]
 
-    const users = useSelector((state: RootState) => state.users)
+      const {data: users, error, mutate} = useSWR({url: '/dashboard/sections'}, GetUsers)
+      const loadingItems = !users && !error;  
 
     function getType(key: string) {
 
@@ -38,7 +40,9 @@ export default function AllUsers({ title }: {
             </Link>
 
             {
-                users.map((user) => {
+                loadingItems ?
+                <p>Loading..</p>
+                : users.map((user: User) => {
                     return <UserItem key={user.id} name={user.name} access={getType(user.type)} role={user.role} phone={user.mobile ?? 'ندارد'} link={`/dashboard/users/edit/${user.id}`} />
                 })
             }

@@ -2,13 +2,11 @@ import DashboardLayout from "@/components/layouts/dashboard"
 import SectionHeading from "@/components/partials/dashboard/section-heading"
 import TextInput from "@/components/partials/dashboard/TextInput"
 import TextInputDynamic from "@/components/partials/dashboard/TextInput-dynamic"
+import callApi from "@/helpers/callApi"
 import User from "@/models/user"
-import { deleteUser, updateUser } from "@/store/slices/usersSlice"
-import { AppDispatch, RootState } from "@/store/store"
 import Head from "next/head"
 import { useRouter } from "next/router"
-import { FormEvent, useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import { FormEvent, useEffect, useState } from "react"
 
 const EditUser = () => {
 
@@ -20,9 +18,14 @@ const EditUser = () => {
 
   const router = useRouter();
 
-  const current = useSelector((state: RootState) => state.users.find((user) => user.id === router.query.user))
+  const [user, setUser] = useState<Partial<User> | undefined>();
 
-  const [user, setUser] = useState<User>(current as User);
+  useEffect(() => {
+    callApi().get(`/users/${router.query.user}`).then((res) => {
+      setUser(res.data);
+    });
+  },[]);
+
 
   function getType(key: string) {
     let value: string = '';
@@ -50,17 +53,25 @@ const EditUser = () => {
     })
   }
 
-  const dispatch = useDispatch<AppDispatch>();
-
-  function update(e: FormEvent) {
+  async function update(e: FormEvent) {
     e.preventDefault();
-    dispatch(updateUser(user));
+    try {
+      await callApi().patch(`/users/${router.query.user}`, user)
+      router.push('/dashboard/users')
+    } catch (err) {
+      console.log(err);
+    }
     router.back();
   }
   
-  function remove(e: FormEvent) {
+  async function remove(e: FormEvent) {
     e.preventDefault();
-    dispatch(deleteUser(user.id));
+    try {
+      await callApi().delete(`/users/${router.query.user}`)
+      router.push('/dashboard/users')
+    } catch (err) {
+      console.log(err);
+    }
     router.back();
   }
 
@@ -70,7 +81,7 @@ const EditUser = () => {
         <title>{`SamCity | ویرایش کاربر`}</title>
       </Head>
 
-      <SectionHeading title="ویرایش کاربر" />
+      <SectionHeading title="ویرایش کاربر" backward />
 
       <form className="grid grid-cols-2 gap-4">
 

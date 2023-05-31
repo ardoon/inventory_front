@@ -1,6 +1,7 @@
 import DashboardLayout from "@/components/layouts/dashboard"
 import SectionHeading from "@/components/partials/dashboard/section-heading"
 import TextInputDynamic from "@/components/partials/dashboard/TextInput-dynamic"
+import callApi from "@/helpers/callApi"
 import User from "@/models/user"
 import { addUser } from "@/store/slices/usersSlice"
 import { AppDispatch } from "@/store/store"
@@ -20,8 +21,7 @@ const NewUser = () => {
     {name: 'عادی', key: 'normal'},
   ]
 
-  const [user, setUser] = useState<User>({
-    id: uuidv4(),
+  const [user, setUser] = useState<Partial<User>>({
     name: '',
     type: 'normal',
     role: '',
@@ -44,12 +44,14 @@ const NewUser = () => {
     })
   }
 
-  const dispatch = useDispatch<AppDispatch>();
-
   function add(e: FormEvent) {
     e.preventDefault();
-    dispatch(addUser(user))
-    router.back();
+    try {
+      callApi().post('/users', user)
+      router.back();
+    } catch(e) {
+      console.log(e);
+    }
   }
 
   return (
