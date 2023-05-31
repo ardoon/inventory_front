@@ -3,23 +3,15 @@ import SectionHeading from "@/components/partials/dashboard/section-heading"
 import TextInput from "@/components/partials/dashboard/TextInput"
 import callApi from "@/helpers/callApi"
 import Unit from "@/models/unit"
-import { deleteUnit, updateUnit } from "@/store/slices/unitsSlice"
-import { AppDispatch, RootState } from "@/store/store"
 import Head from "next/head"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import useSWR from 'swr';
 
 const EditUnit = () => {
 
   const router = useRouter()
 
   const urlId: string = router.query.unit as string
-
-  const units = useSelector((state: RootState) => state.units)
-
-  const dispatch = useDispatch<AppDispatch>();
 
   const [unit, setUnit] = useState<Unit | undefined>();
 
@@ -54,7 +46,7 @@ const EditUnit = () => {
 
   }
 
-  const deleteUnitHandler = async (e: React.FormEvent, name: string | undefined) => {
+  const deleteUnitHandler = async (e: React.FormEvent) => {
 
     e.preventDefault();
 
@@ -64,7 +56,6 @@ const EditUnit = () => {
     } catch (err) {
       console.log(err);
     }
-
 
   }
 
@@ -84,7 +75,7 @@ const EditUnit = () => {
             <TextInput id="productName" label="نام واحد" colSpan={3} value={unitName} defaultValue={unit?.name} inputHandler={inputHandler} />
 
             <button onClick={(e) => updateUnitHandler(e)} type="submit" className="bg-indigo-600 hover:bg-indigo-700 rounded-md h-12 col-span-1 self-end">اعمال تغییرات</button>
-            <span onClick={(e) => deleteUnitHandler(e, unit?.name)} className="bg-rose-600 flex justify-center items-center hover:bg-rose-700 cursor-pointer rounded-md h-12 col-span-1 self-end">حذف واحد</span>
+            <span onClick={(e) => deleteUnitHandler(e)} className="bg-rose-600 flex justify-center items-center hover:bg-rose-700 cursor-pointer rounded-md h-12 col-span-1 self-end">حذف واحد</span>
 
           </form>
 

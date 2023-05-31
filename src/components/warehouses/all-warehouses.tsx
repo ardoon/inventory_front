@@ -1,21 +1,24 @@
 import Warehouse from "@/models/warehouse";
-import { addWarehouse } from "@/store/slices/warehousesSlice";
-import { AppDispatch, RootState } from "@/store/store";
-import { useDispatch, useSelector } from "react-redux";
 import ListItem from "../partials/dashboard/list-item";
 import ListItemInput from "../partials/dashboard/list-item-input";
 import SectionHeading from "../partials/dashboard/section-heading";
+import useSWR from 'swr';
+import { CreateWarehouse, GetWarehouses } from '../../services/warehouse';
 
-export default function AllWarehouses({title} : {
+export default function AllWarehouses({ title }: {
     title?: string
 }) {
 
-    const dispatch = useDispatch<AppDispatch>();
+    const { data: warehouses, error, mutate } = useSWR({ url: '/dashboard/warehouses' }, GetWarehouses)
+    const loadingItems = !warehouses && !error;
 
-    const warehouses = useSelector((state : RootState) => state.warehouses)
-
-    const add = (warehouse: Warehouse) => {
-        dispatch(addWarehouse(warehouse));
+    const add = async (warehouse: Warehouse) => {
+        try {
+            await CreateWarehouse(warehouse);
+            await mutate();
+        } catch (err) {
+            console.log(err);
+        }
     }
 
     return (
@@ -26,11 +29,14 @@ export default function AllWarehouses({title} : {
 
                 <div className="col-span-3"><ListItemInput add={add} id="categoryName" placeHolder="نام انبار جدید را وارد کنید.." /></div>
                 {
-                    warehouses.map((warehouse) => {
-                        return <ListItem label={warehouse.name} link='/dashboard/warehouses/' slug='[warehouse]' id={warehouse.id} /> 
-                    })
+                    loadingItems
+                        ? <h1>Loading..</h1>
+                        :
+                        warehouses.map((warehouse: Warehouse) => {
+                            return <ListItem key={warehouse.id} label={warehouse.name} link='/dashboard/warehouses/' slug='[warehouse]' id={warehouse.id} />
+                        })
                 }
-                
+
 
             </ul>
         </section>

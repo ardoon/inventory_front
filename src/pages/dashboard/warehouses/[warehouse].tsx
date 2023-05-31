@@ -1,41 +1,58 @@
 import DashboardLayout from "@/components/layouts/dashboard"
 import SectionHeading from "@/components/partials/dashboard/section-heading"
 import TextInput from "@/components/partials/dashboard/TextInput"
-import { deleteWarehouse, updateWarehouse } from "@/store/slices/warehousesSlice"
-import { AppDispatch, RootState } from "@/store/store"
+import callApi from "@/helpers/callApi"
+import Warehouse from "@/models/warehouse"
 import Head from "next/head"
 import { useRouter } from "next/router"
-import { FormEvent, useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import { useEffect, useState } from "react"
 
 const EditWarehouse = () => {
 
-  const router = useRouter();
-  const warehouseId = router.query.warehouse;
+  const router = useRouter()
 
-  const warehouse = useSelector((state: RootState) => state.warehouses.find((warehouse)=> warehouse.id === warehouseId))
+  const urlId: string = router.query.warehouse as string
 
-  const [name, setName] = useState<string>(warehouse?.name ?? "")
+  const [warehouse, setWarehouse] = useState<Warehouse | undefined>();
 
-  function inputHandler(value: string) {
-    setName(value);
+  useEffect(() => {
+    callApi().get(`/warehouses/${urlId}`).then((res) => {
+      setWarehouse(res.data);
+    });
+  },[]);
+
+  const [warehouseName, setWarehouseName] = useState<string | undefined>(warehouse?.name);
+
+  const inputHandler = (name: string) => {
+    setWarehouseName(name)
   }
 
-  const dispatch = useDispatch<AppDispatch>();
+  const updateWarehouseHandler = async (e: React.FormEvent) => {
 
-  function update(e: FormEvent) {
     e.preventDefault();
-    dispatch(updateWarehouse({
-      ...warehouse,
-      name
-    }));
-    router.back();
+
+    try {
+      await callApi().patch(`/warehouses/${urlId}`, {
+        name: warehouseName
+      })
+      router.push('/dashboard/warehouses')
+    } catch (err) {
+      console.log(err);
+    }
+
   }
 
-  function remove(e: FormEvent) {
+  const deleteWarehouseHandler = async (e: React.FormEvent) => {
+
     e.preventDefault();
-    dispatch(deleteWarehouse(warehouse?.id as string))
-    router.back();
+
+    try {
+      await callApi().delete(`/warehouses/${urlId}`)
+      router.push('/dashboard/warehouses')
+    } catch (err) {
+      console.log(err);
+    }
+
   }
 
   return (
@@ -44,16 +61,24 @@ const EditWarehouse = () => {
         <title>{`SamCity | ویرایش انبار`}</title>
       </Head>
 
-      <SectionHeading title="ویرایش انبار" />
+      <SectionHeading title={`ویرایش ${warehouse?.name}`} backward={true} />
 
-      <form className="grid grid-cols-6 gap-4">
+      {
+        warehouse ?
 
-        <TextInput inputHandler={inputHandler} id="warehouseName" label="نام انبار" colSpan={3} value={name} />
+          <form className="grid grid-cols-6 gap-4">
 
-        <button onClick={(e) => update(e)} type="submit" className="bg-indigo-600 hover:bg-indigo-700 rounded-md h-12 col-span-1 self-end">اعمال تغییرات</button>
-        <button onClick={(e) => remove(e)} className="bg-rose-500 justify-center flex items-center hover:bg-rose-600 rounded-md h-12 col-span-1 self-end">حذف</button>
+            <TextInput id="productName" label="نام واحد" colSpan={3} value={warehouseName} defaultValue={warehouse?.name} inputHandler={inputHandler} />
 
-      </form>
+            <button onClick={(e) => updateWarehouseHandler(e)} type="submit" className="bg-indigo-600 hover:bg-indigo-700 rounded-md h-12 col-span-1 self-end">اعمال تغییرات</button>
+            <span onClick={(e) => deleteWarehouseHandler(e)} className="bg-rose-600 flex justify-center items-center hover:bg-rose-700 cursor-pointer rounded-md h-12 col-span-1 self-end">حذف واحد</span>
+
+          </form>
+
+          :
+
+          <p>چنین انباری وجود ندارد</p>
+      }
 
     </DashboardLayout>
   )
