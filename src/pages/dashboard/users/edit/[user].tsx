@@ -27,7 +27,7 @@ const EditUser = () => {
   },[]);
 
 
-  function getType(key: string) {
+  function getType(key: string | undefined) {
     let value: string = '';
     access.forEach(item => {
       if (item.key === key) {
