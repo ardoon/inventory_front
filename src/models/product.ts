@@ -1,8 +1,8 @@
 export default interface Product {
     id: string,
     name: string,
-    categoryId: string,
-    unit: string,
-    secondaryUnit?: string,
+    categoryId: number,
+    unitId: number,
+    secondaryUnitId?: number,
     unitsRatio?: number
 }

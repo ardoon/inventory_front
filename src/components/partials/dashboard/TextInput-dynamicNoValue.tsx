@@ -1,11 +1,10 @@
-export default function TextInputDynamic({ id, label, colSpan, placeHolder, isDisable, data, value, defaultValue, inputHandler }: {
+export default function TextInputDynamicNoValue({ id, label, colSpan, placeHolder, isDisable, data, defaultValue, inputHandler }: {
     id: string,
     label: string,
     colSpan: number,
     placeHolder?: string,
     isDisable?: boolean,
     data?: Array<any>,
-    value?: string,
     defaultValue?: string,
     inputHandler?: Function
 }) {
@@ -34,7 +33,6 @@ export default function TextInputDynamic({ id, label, colSpan, placeHolder, isDi
                 type='text'
                 list={listId}
                 defaultValue={defaultValue}
-                value={value}
                 placeholder={placeHolder}
                 disabled={isDisable}
                 className={`h-12 border-0 text-slate-300 text-sm w-full rounded-md block bg-slate-800 focus:ring-0 px-4`} />            {

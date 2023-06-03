@@ -1,36 +1,51 @@
 import Category from "@/models/category"
-import Unit from "@/models/unit"
-import { RootState } from "@/store/store"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { useSelector } from "react-redux"
 import SectionHeading from "../partials/dashboard/section-heading"
+import { useEffect, useState } from "react"
+import callApi from "@/helpers/callApi"
+import { GetUnits } from "@/services/unit"
+import useSWR from 'swr';
+import Product from "@/models/product"
 import ProductItem from "./product-item"
+import Unit from "@/models/unit"
 
-export default function Products({ categoryLabel }: {
-    categoryLabel: string
-}) {
+export default function Products() {
 
     const router = useRouter();
 
-    const categories: Category[] = useSelector((state: RootState) =>
-        state.categories
-    )
+    const {data: products, error, mutate} = useSWR({url: `/dashboard/products/list/${router.query.category}`}, async () => {
+        const res = (await callApi().get(`/products?categoryId=${router.query.category}`)).data;
+        return res as Product[];
+    })
+    const loadingItems = !products && !error;
 
-    const category = categories.find((cate) => cate.id === router.query.category)
+    const {data: units, error: err} = useSWR({url: '/dashboard/products/units'}, GetUnits);
+    const loadingUnits = !units && !err;
 
-    const products = useSelector((state: RootState) => state.products.filter((item) => {
-        return item.categoryId === category?.id
-    }))    
+    mutate();
 
-    const units: Unit[] = useSelector((state: RootState) =>
-        state.units
-    )
+    const [category, setCategory] = useState<Category | undefined>();
+    useEffect(() => {
+        callApi().get(`/categories/${router.query.category}`).then((res) => {
+            setCategory(res.data);
+        });
+    }, [router.query.category]);
+
+    function getUnit(id: number | undefined): string {
+        const unit: Unit = units.find((unit: Unit) => {
+            return +unit.id === id;
+        })
+        if(unit) {
+            return unit.name;
+        }
+        return 'ندارد';
+    }
 
     return (
         <>
             <header className="mb-10">
-                <SectionHeading title={`کالاهای دسته ${category?.name}`} backward/>
+                <SectionHeading title={`کالاهای دسته ${category?.name}`} backward />
             </header>
 
             <section className="w-full text-gray-300 space-y-6">
@@ -42,8 +57,9 @@ export default function Products({ categoryLabel }: {
                     </Link>
 
                     {
-                        products.map((item) => {
-                            return <ProductItem name={item.name} primaryUnit={item.unit} secondaryUnit={item.secondaryUnit ?? 'ندارد'} amount={0} link={`/dashboard/products/list/edit/${item.id}`} />
+                        loadingItems || loadingUnits ? <p>Loading..</p>
+                        : products?.map((item: Product) => {
+                            return <ProductItem key={item.id} name={item.name} primaryUnit={getUnit(item.unitId)} secondaryUnit={getUnit(item.secondaryUnitId)} amount={0} link={`/dashboard/products/list/edit/${item.id}`} />
                         })
                     }
                 </>

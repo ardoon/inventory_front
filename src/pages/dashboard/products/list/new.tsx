@@ -3,45 +3,82 @@ import SectionHeading from "@/components/partials/dashboard/section-heading"
 import TextInputDynamic from "@/components/partials/dashboard/TextInput-dynamic"
 import TextInputDynamicNumber from "@/components/partials/dashboard/TextInput-dynamicNumber"
 import Product from "@/models/product"
-import { addProduct } from "@/store/slices/productsSlice"
-import { AppDispatch, RootState } from "@/store/store"
 import Head from "next/head"
 import { useRouter } from "next/router"
 import { FormEvent, useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import { v4 as uuidv4 } from 'uuid';
+import useSWR from 'swr';
+import { GetUnits } from "@/services/unit"
+import callApi from "@/helpers/callApi"
+import Unit from "@/models/unit"
 
 const NewProduct = () => {
 
   const router = useRouter();
 
-  const units = useSelector((state: RootState) => state.units)
+  const {data: units} = useSWR({url: '/dashboard/products/units'}, GetUnits);
 
-  const [product, setProduct] = useState<Product>({
-    id: uuidv4(),
+  const [product, setProduct] = useState<Partial<Product>>({
     name: '',
-    categoryId: router.query.categoryId as string,
-    unit: '',
-    secondaryUnit: undefined,
+    categoryId: parseInt(router.query.categoryId as string),
+    unitId: undefined,
+    secondaryUnitId: undefined,
     unitsRatio: undefined
   })
 
   function inputHandler(key: string, value: string | number) {
-    setProduct({
-      ...product,
-      [key]: value
-    })
+    if(key === "unitId") {
+      if(value === "") {
+        setProduct({
+          ...product,
+          unitId: undefined
+        })
+      }
+      const unit: Unit = units.find((unit: Unit) => {
+        return unit.name === value;
+      })
+      if(unit) { 
+        setProduct({
+          ...product,
+          unitId: +unit.id
+        })
+      }
+    } else if(key === 'secondaryUnitId') {
+      if(value === "") {
+        setProduct({
+          ...product,
+          secondaryUnitId: undefined
+        })
+      }
+      const unit: Unit = units.find((unit: Unit) => {
+        return unit.name === value;
+      })
+      if(unit) { 
+        setProduct({
+          ...product,
+          secondaryUnitId: +unit.id
+        })
+      }
+    } else if (key === 'unitsRatio') { 
+      setProduct({
+        ...product,
+        unitsRatio: +value
+      })
+    } else {
+      setProduct({
+        ...product,
+        [key]: value
+      })
+    }
   }
 
-  const dispatch = useDispatch<AppDispatch>();
-
-
-  const add = (e: FormEvent) => {
+  function add(e: FormEvent) {
     e.preventDefault();
-
-    dispatch(addProduct(product)); 
-
-    router.back();
+    try {
+      callApi().post('/products', product)
+      router.back();
+    } catch(e) {
+      console.log(e);
+    }
   }
 
 
@@ -56,8 +93,8 @@ const NewProduct = () => {
       <form className="grid grid-cols-2 gap-4">
 
         <TextInputDynamic inputHandler={inputHandler} id="name" label="نام کالا" colSpan={1} />
-        <TextInputDynamic inputHandler={inputHandler} id="unit" label="واحد اصلی" colSpan={1} data={units} />
-        <TextInputDynamic inputHandler={inputHandler} id="secondaryUnit" data={units} label="واحد ثانویه" colSpan={1} placeHolder='این فیلد اختیاری است' />
+        <TextInputDynamic inputHandler={inputHandler} id="unitId" label="واحد اصلی" colSpan={1} data={units} />
+        <TextInputDynamic inputHandler={inputHandler} id="secondaryUnitId" data={units} label="واحد ثانویه" colSpan={1} placeHolder='این فیلد اختیاری است' />
         <TextInputDynamicNumber inputHandler={inputHandler} id="unitsRatio" label="نسبت واحد اولیه به ثانویه (عدد صحیح یا اعشاری)" colSpan={1} placeHolder='در صورت وجود واحد ثانویه اجباری است' />
 
         <button onClick={(e) => add(e)} type="submit" className="bg-indigo-600 hover:bg-indigo-700 rounded-md h-12 col-span-2 mt-4">ثبت کالا</button>

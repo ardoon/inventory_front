@@ -10,7 +10,7 @@ const ProductsList = () => {
         <title>{`SamCity | مشاهده کالا ها`}</title>
       </Head>
 
-      <Products categoryLabel='مصالح مصرفی کارگاه' />
+      <Products/>
 
     </DashboardLayout>
   )
