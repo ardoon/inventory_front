@@ -6,28 +6,33 @@ type inputProps = {
     children?: React.ReactNode,
     label: string,
     icon: string,
-    link: string,
+    link?: string,
+    action?: () => void
 }
 
 export default function MenuItem(props: inputProps) {
 
     const [active, setActive] = useState<Boolean>(false);
 
-    const router = useRouter();    
+    const router = useRouter();
 
     return (
         <>
-            <li>
+            <li onClick={props.action}>
                 <div className='flex items-center'>
                     <i className={`bi bi-${props.icon} rtl:ml-2 ltr:mr-2 text-xl text-indigo-400`}></i>
-                    <Link href={props.link} className='hover:text-indigo-400 block'>
-                        {props.label}
-                    </Link>
+                    {
+                        props.link ? <Link href={props.link} className='hover:text-indigo-400 block' >
+                            {props.label}
+                        </Link> : <span className='hover:text-indigo-400 block cursor-pointer' >
+                            {props.label}
+                        </span>
+                    }
 
                     {
-                        props.children ? 
-                            active === true ? <i onClick={() => { setActive(!active) }} className="bi bi-caret-down rtl:mr-1 ltr:ml-1 cursor-pointer"></i> : <i onClick={() => { setActive(!active) }} className={`bi rtl:mr-1 ltr:ml-1 self-center cursor-pointer ${ router.locale === 'en' ? 'bi-caret-right' : 'bi-caret-left'}`}></i>
-                        : ''
+                        props.children ?
+                            active === true ? <i onClick={() => { setActive(!active) }} className="bi bi-caret-down rtl:mr-1 ltr:ml-1 cursor-pointer"></i> : <i onClick={() => { setActive(!active) }} className={`bi rtl:mr-1 ltr:ml-1 self-center cursor-pointer ${router.locale === 'en' ? 'bi-caret-right' : 'bi-caret-left'}`}></i>
+                            : ''
                     }
 
                 </div>

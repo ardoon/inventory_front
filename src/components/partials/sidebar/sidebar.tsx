@@ -1,6 +1,7 @@
 import { TFunction } from 'next-i18next'
 import { useRouter } from 'next/router';
 import MenuItem from "./menu-item";
+import callApi from '@/helpers/callApi';
 
 type inputProps = {
     t: TFunction
@@ -10,6 +11,15 @@ export default function Sidebar(props: inputProps) {
     
     const router = useRouter();
     let logoutIcon = router.locale === 'en' ? 'box-arrow-left' : 'box-arrow-right';
+
+    async function logout() {
+        try {
+            await callApi().post(`/auth/logout`)
+            router.push('/')
+        } catch (error) {
+            console.log(error);            
+        }
+    }
 
     return (
         <aside className='min-h-screen px-8 pt-16 pb-6 bg-slate-900 border-l-2 border-l-slate-900'>
@@ -44,7 +54,7 @@ export default function Sidebar(props: inputProps) {
                     <MenuItem label={props.t('menu.label', { context: 'parts' })} icon='buildings' link='/dashboard/sections' />
                     <MenuItem label={props.t('menu.label', { context: 'warehouses' })} icon='columns-gap' link='/dashboard/warehouses' />
                     <MenuItem label={props.t('menu.label', { context: 'users' })} icon='people' link='/dashboard/users' />
-                    <MenuItem label={props.t('menu.label', { context: 'logout' })} icon={logoutIcon} link='/logout' />
+                    <MenuItem label={props.t('menu.label', { context: 'logout' })} icon={logoutIcon} action={logout} />
 
                 </ul>
 
