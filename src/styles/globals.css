@@ -98,3 +98,26 @@ input:-webkit-autofill:focus {
   height: 28px !important;
 }
 
+/* Toastify Custom Styles */
+.Toastify__progress-bar--warning {
+  background: #ff9c3f !important;
+}
+
+.Toastify__progress-bar--success {
+  background: #89ff65 !important;
+}
+
+.Toastify__progress-bar--error {
+  background: #ff5c5c !important;
+}
+
+.Toastify__toast-theme--dark{
+  background: #191919 !important;
+  font-family: 'irsans' !important;
+}
+
+:root {
+  --toastify-color-warning: #ff9c3f !important;
+  --toastify-color-success: #89ff65 !important;
+  --toastify-color-error: #ff5c5c !important;
+}

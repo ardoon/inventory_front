@@ -25,6 +25,7 @@ const Home = () => {
         })
         if(res.data.id) {
           router.push('/dashboard')
+          toast.success('تبریک! با موفقیت وارد شدید')
         }
       } catch (error: any) {
         if(error.code === 'ERR_BAD_REQUEST') {
