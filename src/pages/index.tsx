@@ -3,8 +3,9 @@ import Head from 'next/head'
 import AuthLayout from '@/components/layouts/auth'
 import AuthInput from '@/components/partials/form-elements/auth-input'
 import callApi from '@/helpers/callApi'
-import { FormEvent } from 'react'
+import { FormEvent, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { toast } from 'react-toastify'
 
 const Home = () => {
 
@@ -14,12 +15,27 @@ const Home = () => {
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    const res = await callApi().post('/auth/login', {
-      "mobile": "09185335318",
-      "password": "123456"
-    })
-    router.push('/dashboard')
+    if(username === "" || password === "") {
+      toast.warning('لطفا اطلاعات را وارد کنید')
+    } else {
+      try {
+        const res = await callApi().post('/auth/login', {
+          "mobile": username,
+          "password": password
+        })
+        if(res.data.id) {
+          router.push('/dashboard')
+        }
+      } catch (error: any) {
+        if(error.code === 'ERR_BAD_REQUEST') {
+          toast.error('اطلاعات وارد شده صحیح نیست')
+        }
+      }
+    }
   }
+
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
   return (
     <AuthLayout>
@@ -37,12 +53,14 @@ const Home = () => {
           <form className='space-y-6'>
 
             <AuthInput
+              id='username'
               label={t('login.input', { context: 'username' })}
-              type='text' t={t} />
+              type='text' inputHandler={(value: string) => setUsername(value)} t={t}/>
 
             <AuthInput
+              id='password'
               label={t('login.input', { context: 'password' })}
-              type='password' t={t} />
+              type='password' inputHandler={(value: string) => setPassword(value)} t={t}/>
 
             <div className='flex justify-start w-2/3 mx-auto space-y-2'>
               <label className='text-slate-300 text-sm order-last self-center pt-2' htmlFor='remember'>{t('login.input', { context: 'remember' })}</label>
@@ -52,9 +70,9 @@ const Home = () => {
               <button type='submit' onClick={e => handleSubmit(e)} className='bg-indigo-600 w-full h-12 rounded-md'>{t('login.input', { context: 'submitBtn' })}</button>
             </div>
 
-            <div className='w-2/3 mx-auto'>
+            {/* <div className='w-2/3 mx-auto'>
               <a href="#" className='text-sm text-slate-500 hover:text-indigo-400'>{t('login.forgotPassword')}</a>
-            </div>
+            </div> */}
 
           </form>
         </section>
