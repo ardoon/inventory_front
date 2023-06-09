@@ -2,44 +2,44 @@ import DashboardLayout from "@/components/layouts/dashboard"
 import SectionHeading from "@/components/partials/dashboard/section-heading"
 import TextInput from "@/components/partials/dashboard/TextInput"
 import Head from "next/head"
-import DatePicker from "react-multi-date-picker";
+import DatePicker, { DateObject } from "react-multi-date-picker";
 import jalali from "react-date-object/calendars/jalali"
 import persian_fa from "react-date-object/locales/persian_fa"
-import { useEffect, useState } from "react"
+import { FormEvent, useEffect, useState } from "react"
+import useSWR from 'swr';
+import { GetUsers } from "@/services/user";
+import User from "@/models/user";
+import { GetWarehouses } from "@/services/warehouse";
+import Warehouse from "@/models/warehouse";
+import TextInputDynamic from "@/components/partials/dashboard/TextInput-dynamic";
+import TextInputWithData from "@/components/partials/dashboard/TextInput-with-data";
 
 const NewEntry = () => {
 
-  const [hasMounted, setHasMounted] = useState(false);
-
-  useEffect(() => {
-    setHasMounted(true);
-  }, []);
-
-  if (!hasMounted) {
-    return null;
+  interface Entry {
+    date: DateObject,
+    receptNo: string,
+    userId: number,
+    warehouseId: number
   }
 
+  const [entry, setEntry] = useState<Partial<Entry>>({
+    date: new DateObject(),
+    receptNo: new Date().getTime().toString(),
+    userId: undefined,
+    warehouseId: undefined
+  });
 
-  const units = [
-    'متر',
-    'کلیوگرم',
-    'بسته',
-    'کیسه',
-    'عدد'
-  ]
+  function setDate(val: DateObject) {
+    setEntry({ ...entry, date: val });
+  }
 
-  const warehouses = [
-    'west',
-    'east',
-    'north',
-    'south'
-  ]
-
-  const users = [
-    'aran',
-    'shaho',
-    'ramin'
-  ]
+  function inputHandler(key: string, value: string | number) {
+    setEntry({
+      ...entry,
+      [key]: value
+    })
+  }
 
   return (
     <DashboardLayout>
@@ -60,14 +60,41 @@ const NewEntry = () => {
             inputClass={`h-12 border-0 text-slate-300 text-sm w-full rounded-md block bg-slate-800 focus:ring-0 px-4`}
             containerStyle={{ width: "100%", paddingTop: "5px" }}
             calendarPosition="bottom-right"
+            value={entry.date}
+            onChange={(val: DateObject) => { setDate(val) }}
           />
         </div>
 
-        <TextInput id="no" label="شماره رسید" colSpan={1} />
-        <TextInput id="user" label="وارد کننده" colSpan={1} data={users} />
-        <TextInput id="warehouse" label="انبار" colSpan={1} data={warehouses} />
+        <TextInput inputHandler={(val: string) => { setEntry({ ...entry, receptNo: val }) }} defaultValue={entry.receptNo} id="no" label="شماره رسید" colSpan={1} />
+        <TextInputWithData inputHandler={inputHandler} id="userId" label="وارد کننده" colSpan={1} dataKey="users" />
+        <TextInputWithData inputHandler={inputHandler} id="warehouseId" label="انبار" colSpan={1} dataKey="warehouses" />
 
         <table className="mt-10 text-sm col-span-2 border-separate border-spacing-2">
+          <thead>
+            <tr>
+              <th>ردیف</th>
+              <th>کالا</th>
+              <th>مقدار</th>
+              <th>واحد</th>
+              <th>قیمت (ریال)</th>
+              <th>توضیحات</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr className="space-x-2">
+              <td className="flex items-center h-10 justify-center"></td>
+              <td><input type='text' className="bg-slate-800 border-none rounded-sm w-full" /></td>
+              <td><input type='text' className="bg-slate-800 border-none rounded-sm w-full" /></td>
+              <td><input type='text' className="bg-slate-800 border-none rounded-sm w-full" /></td>
+              <td><input type='text' className="bg-slate-800 border-none rounded-sm w-full" /></td>
+              <td><input type='text' className="bg-slate-800 border-none rounded-sm w-full" /></td>
+              <td className="pt-1 text-2xl cursor-pointer">+</td>
+            </tr>
+          </tbody>
+        </table>
+
+        {/* <table className="mt-10 text-sm col-span-2 border-separate border-spacing-2">
           <tr className="">
             <th>ردیف</th>
             <th>کالا</th>
@@ -87,7 +114,7 @@ const NewEntry = () => {
             <td className="pt-1"><i className="bi bi-trash3 cursor-pointer text-rose-400"></i></td>
           </tr>
           <tr className="space-x-2">
-            <td className="flex items-center h-10 justify-center">2</td>
+            <td className="flex items-center h-10 justify-center">1</td>
             <td><input type='text' className="bg-slate-800 border-none rounded-sm w-full" /></td>
             <td><input type='text' className="bg-slate-800 border-none rounded-sm w-full" /></td>
             <td><input type='text' className="bg-slate-800 border-none rounded-sm w-full" /></td>
@@ -95,7 +122,7 @@ const NewEntry = () => {
             <td><input type='text' className="bg-slate-800 border-none rounded-sm w-full" /></td>
             <td className="pt-1 text-2xl cursor-pointer">+</td>
           </tr>
-        </table>
+        </table> */}
 
         <button type="submit" className="bg-indigo-600 hover:bg-indigo-700 rounded-md h-12 col-span-2 mt-4">ثبت</button>
 

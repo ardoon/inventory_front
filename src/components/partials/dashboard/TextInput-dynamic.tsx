@@ -8,7 +8,7 @@ export default function TextInputDynamic({ id, label, colSpan, placeHolder, isDi
     value?: string,
     defaultValue?: string,
     inputHandler?: Function
-}) {
+}) {    
     
     let listId;
 
@@ -37,6 +37,7 @@ export default function TextInputDynamic({ id, label, colSpan, placeHolder, isDi
                 value={value}
                 placeholder={placeHolder}
                 disabled={isDisable}
+                autoComplete="off"
                 className={`h-12 border-0 text-slate-300 text-sm w-full rounded-md block bg-slate-800 focus:ring-0 px-4`} />            {
                 data ?
                     (

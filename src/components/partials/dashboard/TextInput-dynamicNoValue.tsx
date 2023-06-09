@@ -35,6 +35,7 @@ export default function TextInputDynamicNoValue({ id, label, colSpan, placeHolde
                 defaultValue={defaultValue}
                 placeholder={placeHolder}
                 disabled={isDisable}
+                autoComplete="off"
                 className={`h-12 border-0 text-slate-300 text-sm w-full rounded-md block bg-slate-800 focus:ring-0 px-4`} />            {
                 data ?
                     (
