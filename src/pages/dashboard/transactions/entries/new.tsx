@@ -5,13 +5,9 @@ import Head from "next/head"
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import jalali from "react-date-object/calendars/jalali"
 import persian_fa from "react-date-object/locales/persian_fa"
-import { FormEvent, useEffect, useState } from "react"
-import useSWR from 'swr';
-import { GetUsers } from "@/services/user";
-import User from "@/models/user";
-import { GetWarehouses } from "@/services/warehouse";
-import Warehouse from "@/models/warehouse";
-import TextInputDynamic from "@/components/partials/dashboard/TextInput-dynamic";
+import { useState } from "react"
+import EntryRecordRowNew from "@/components/partials/table/entry-record-row-new";
+import EntryRecordRow from "@/components/partials/table/entry-record-row";
 import TextInputWithData from "@/components/partials/dashboard/TextInput-with-data";
 
 const NewEntry = () => {
@@ -39,6 +35,13 @@ const NewEntry = () => {
       ...entry,
       [key]: value
     })
+  }
+
+  const [records, setRecords] = useState([]);
+
+  function addRecord(record: any) {     
+    const joined = records.concat(record);
+    setRecords(joined);
   }
 
   return (
@@ -82,15 +85,12 @@ const NewEntry = () => {
             </tr>
           </thead>
           <tbody>
-            <tr className="space-x-2">
-              <td className="flex items-center h-10 justify-center"></td>
-              <td><input type='text' className="bg-slate-800 border-none rounded-sm w-full" /></td>
-              <td><input type='text' className="bg-slate-800 border-none rounded-sm w-full" /></td>
-              <td><input type='text' className="bg-slate-800 border-none rounded-sm w-full" /></td>
-              <td><input type='text' className="bg-slate-800 border-none rounded-sm w-full" /></td>
-              <td><input type='text' className="bg-slate-800 border-none rounded-sm w-full" /></td>
-              <td className="pt-1 text-2xl cursor-pointer">+</td>
-            </tr>
+            <EntryRecordRowNew add={addRecord} />
+            {
+              records?.map((record, index) => {
+                return <EntryRecordRow key={index} no={index} record={record} />
+              })
+            }
           </tbody>
         </table>
 

@@ -32,7 +32,7 @@ export default function TextInputWithData({ id, label, colSpan, placeHolder, isD
             return item.name === value;
         })
         if (item) {
-            inputHandler(id, item.id)
+            inputHandler(id, item.id, item.name)
         } else {
             inputHandler(id, undefined);
         }
