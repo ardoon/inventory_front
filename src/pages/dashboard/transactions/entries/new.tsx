@@ -5,14 +5,20 @@ import Head from "next/head"
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import jalali from "react-date-object/calendars/jalali"
 import persian_fa from "react-date-object/locales/persian_fa"
-import { useState } from "react"
+import { FormEvent, useState } from "react"
 import EntryRecordRowNew from "@/components/partials/table/entry-record-row-new";
 import EntryRecordRow from "@/components/partials/table/entry-record-row";
 import TextInputWithData from "@/components/partials/dashboard/TextInput-with-data";
 import Record from "@/models/record";
+import callApi from "@/helpers/callApi";
+import { useRouter } from "next/router";
+import { toast } from "react-toastify";
+import gregorian from "react-date-object/calendars/gregorian"
+import gregorian_en from "react-date-object/locales/gregorian_en"
 
 const NewEntry = () => {
 
+  const router = useRouter();
   interface Entry {
     date: DateObject,
     receptNo: string,
@@ -64,13 +70,37 @@ const NewEntry = () => {
     setRecords(prev => (recs));
   }
 
+  async function saveData(e: FormEvent) {
+    e.preventDefault();
+    if(entry.date && entry.receptNo && entry.userId && entry.warehouseId && records.length > 0) {
+      try {
+        const body = {
+          entry: {
+            date: (entry.date.convert(gregorian, gregorian_en).toDate()),
+            receptNo: entry.receptNo,
+            userId: +(entry.userId),
+            warehouseId: +(entry.warehouseId)
+          },
+          records
+        }        
+        const result = await callApi().post('/entries', body);
+        if(result.data.userId) {
+          toast.success('ثبت ورود با موفقیت انجام شد')
+          router.push('/dashboard/transactions/entries')
+        }
+      } catch (err) {
+        toast.error(`Error: ${err}`)
+      }
+    }
+  }
+
   return (
     <DashboardLayout>
       <Head>
         <title>{`SamCity | ثبت ورودی جدید`}</title>
       </Head>
 
-      <SectionHeading title="ثبت ورودی جدید" backward={true} />
+      <SectionHeading title="ثبت ورودی جدید" backward />
 
       <form className="grid grid-cols-2 gap-4">
 
@@ -114,7 +144,7 @@ const NewEntry = () => {
           </tbody>
         </table>
 
-        <button type="submit" className="bg-indigo-600 hover:bg-indigo-700 rounded-md h-12 col-span-2 mt-4">ثبت</button>
+        <button onClick={(e) => saveData(e)} type="submit" className="bg-indigo-600 hover:bg-indigo-700 rounded-md h-12 col-span-2 mt-4">ثبت</button>
 
       </form>
 

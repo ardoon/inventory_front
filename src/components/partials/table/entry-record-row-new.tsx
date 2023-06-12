@@ -24,21 +24,28 @@ export default function EntryRecordRowNew({add}: {add: Function}) {
             if(key === 'productId') {
                 setRecord({
                     ...record,
-                    productId: value as number,
+                    productId: +value,
                     productName: content
                 })
             } else if(key === 'unitId') {
                 setRecord({
                     ...record,
-                    unitId: value as number,
+                    unitId: +value,
                     unitName: content
                 })
             }
         } else {
-            setRecord({
-                ...record,
-                [key]: value
-            })
+            if(key === "description") {
+                setRecord({
+                    ...record,
+                    [key]: value as string
+                })
+            } else {
+                setRecord({
+                    ...record,
+                    [key]: +value
+                })
+            }
         }
     }
 
