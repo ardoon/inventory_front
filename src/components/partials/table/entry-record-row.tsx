@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TextInputWithData from "../dashboard/TextInput-with-data";
 import TextInputDynamic from "../dashboard/TextInput-dynamic";
 import { toast } from "react-toastify";
 import Record from "@/models/record";
+import TextInputDynamicNumber from "../dashboard/TextInput-dynamicNumber";
 
-export default function EntryRecordRow({update, no, single}: {update: Function, no: number, single: Record}) {
+export default function EntryRecordRow({update, remove, no, single}: {update: Function, remove: Function, no: number, single: Record}) {
 
     const initial = {
         productId: undefined,
@@ -14,42 +15,35 @@ export default function EntryRecordRow({update, no, single}: {update: Function, 
         description: undefined
     }
 
-    interface Form {
-        productId: string | undefined,
-        amount: string | undefined,
-        unitId: string | undefined,
-        price: string | undefined,
-        description: string | undefined
-    }
-
     const [record, setRecord] = useState<Partial<Record>>(single);
-    const [form, setForm] = useState<Form | Partial<Record>>(single);
+
+    useEffect(() => {
+        setRecord(single)
+    }, [single])
 
     function inputHandler(key: string, value: string | number, content?: string) {
-        setRecord({
-            ...record,
-            [key]: value
-        })
-        setForm({
-            ...form,
-            [key]: content ?? value
-        })
-        update(no, {...record,[key]: value});
-    }
-
-    function addRecord() {
-        if(record.productId && record.amount && record.unitId && (record.price || record.price == 0)) {
-            update(record);
-            setRecord(initial)
-            setForm({
-                productId: "",
-                amount: "",
-                unitId: "",
-                price: "",
-                description: ""
-            })
+        if(content) {
+            if(key === 'productId') {
+                setRecord({
+                    ...record,
+                    productId: value as number,
+                    productName: content
+                })
+                update(no, {...record,[key]: value, productName: content});
+            } else if(key === 'unitId') {
+                setRecord({
+                    ...record,
+                    unitId: value as number,
+                    unitName: content
+                })
+                update(no, {...record,[key]: value, unitName: content});
+            }
         } else {
-            toast.warning('لطفا همه فیلد های ضروری پر شود');
+            setRecord({
+                ...record,
+                [key]: value
+            })
+            update(no, {...record,[key]: value});
         }
     }
 
@@ -59,27 +53,25 @@ export default function EntryRecordRow({update, no, single}: {update: Function, 
                 {no + 1}
             </td>
             <td>
-                <TextInputWithData colSpan={1} id="productId" value={form.productId as string} label="" dataKey="products" inputHandler={inputHandler} />
+                <TextInputWithData colSpan={1} id="productId" value={record.productName} label="" dataKey="products" inputHandler={inputHandler} />
             </td>
             <td>
-                <TextInputDynamic value={form.amount as string} colSpan={1} id="amount" label="" inputHandler={inputHandler} />
+                <TextInputDynamicNumber value={record.amount as number} colSpan={1} id="amount" label="" inputHandler={inputHandler} />
             </td>
             <td>
                 {
-                    record.productId ? <TextInputWithData value={form.unitId as string} colSpan={1} id="unitId" label="" dataKey={`products/units/${record.productId}`} inputHandler={inputHandler} />
+                    record.productId ? <TextInputWithData value={record.unitName} colSpan={1} id="unitId" label="" dataKey={`products/units/${record.productId}`} inputHandler={inputHandler} />
                     : <TextInputDynamic colSpan={1} id="unitId" label="" inputHandler={inputHandler} isDisable />
                 }
                 
             </td>
             <td>
-                <TextInputDynamic value={form.price as string} colSpan={1} id="price" label="" inputHandler={inputHandler} />
+                <TextInputDynamicNumber value={record.price as number} colSpan={1} id="price" label="" inputHandler={inputHandler} />
             </td>
             <td>
-                <TextInputDynamic value={form.description} colSpan={1} id="description" label="" inputHandler={inputHandler} />
+                <TextInputDynamic value={record.description} colSpan={1} id="description" label="" inputHandler={inputHandler} />
             </td>
-            <td className="text-2xl cursor-pointer flex items-center h-12 pt-5" onClick={addRecord}>
-                +
-            </td>
+            <td className="pt-1" onClick={() => remove(no)}><i className="bi bi-trash3 cursor-pointer text-rose-400"></i></td>
         </tr>
     )
 }

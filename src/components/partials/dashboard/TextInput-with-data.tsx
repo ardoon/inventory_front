@@ -1,4 +1,5 @@
 import callApi from '@/helpers/callApi';
+import { useEffect } from 'react';
 import useSWR from 'swr';
 
 export default function TextInputWithData({ id, label, colSpan, placeHolder, isDisable, dataKey, value, defaultValue, inputHandler }: {
@@ -8,7 +9,7 @@ export default function TextInputWithData({ id, label, colSpan, placeHolder, isD
     placeHolder?: string,
     isDisable?: boolean,
     dataKey: string,
-    value?: string,
+    value?: string | number,
     defaultValue?: string,
     inputHandler: Function
 }) {
@@ -22,16 +23,16 @@ export default function TextInputWithData({ id, label, colSpan, placeHolder, isD
         return (await callApi().get(`/${dataKey}`)).data
     });
 
-    if(typeof(value) === 'number') {
-        const item = data.find((item: any) => {
-            return item.id === value;
-        })
-        if (item) {
-            inputHandler(id, item.id, item.name)
-        } else {
-            inputHandler(id, undefined, '');
+    useEffect(() => {
+        if (data) {
+            const item = data.find((item: any) => {
+                return item.id == value;
+            })
+            if (item) {
+                inputHandler(id, item.id, item.name)                
+            }
         }
-    }
+    }, [value])
 
     const handler = (e: any) => {
         let value = e.target.value

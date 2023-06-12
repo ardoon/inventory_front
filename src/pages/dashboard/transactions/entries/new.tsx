@@ -57,6 +57,13 @@ const NewEntry = () => {
     )
   }
 
+  function removeRecord(no: number) {
+    let recs = records;
+    recs = recs.filter((item, index) => index !== no)
+    // setRecords(recs);
+    setRecords(prev => (recs));
+  }
+
   return (
     <DashboardLayout>
       <Head>
@@ -101,41 +108,11 @@ const NewEntry = () => {
             <EntryRecordRowNew add={addRecord} />
             {
               records?.map((record, index) => {
-                return <EntryRecordRow update={updateRecord} key={index} no={index} single={record} />
+                return <EntryRecordRow update={updateRecord} remove={removeRecord} key={index} no={index} single={record} />
               })
             }
           </tbody>
         </table>
-
-        {/* <table className="mt-10 text-sm col-span-2 border-separate border-spacing-2">
-          <tr className="">
-            <th>ردیف</th>
-            <th>کالا</th>
-            <th>مقدار</th>
-            <th>واحد</th>
-            <th>قیمت (ریال)</th>
-            <th>توضیحات</th>
-            <th></th>
-          </tr>
-          <tr className="space-x-2">
-            <td className="flex items-center h-10 justify-center">1</td>
-            <td><input type='text' className="bg-slate-800 border-none rounded-sm w-full" /></td>
-            <td><input type='text' className="bg-slate-800 border-none rounded-sm w-full" /></td>
-            <td><input type='text' className="bg-slate-800 border-none rounded-sm w-full" /></td>
-            <td><input type='text' className="bg-slate-800 border-none rounded-sm w-full" /></td>
-            <td><input type='text' className="bg-slate-800 border-none rounded-sm w-full" /></td>
-            <td className="pt-1"><i className="bi bi-trash3 cursor-pointer text-rose-400"></i></td>
-          </tr>
-          <tr className="space-x-2">
-            <td className="flex items-center h-10 justify-center">1</td>
-            <td><input type='text' className="bg-slate-800 border-none rounded-sm w-full" /></td>
-            <td><input type='text' className="bg-slate-800 border-none rounded-sm w-full" /></td>
-            <td><input type='text' className="bg-slate-800 border-none rounded-sm w-full" /></td>
-            <td><input type='text' className="bg-slate-800 border-none rounded-sm w-full" /></td>
-            <td><input type='text' className="bg-slate-800 border-none rounded-sm w-full" /></td>
-            <td className="pt-1 text-2xl cursor-pointer">+</td>
-          </tr>
-        </table> */}
 
         <button type="submit" className="bg-indigo-600 hover:bg-indigo-700 rounded-md h-12 col-span-2 mt-4">ثبت</button>
 
