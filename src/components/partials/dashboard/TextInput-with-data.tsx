@@ -22,6 +22,17 @@ export default function TextInputWithData({ id, label, colSpan, placeHolder, isD
         return (await callApi().get(`/${dataKey}`)).data
     });
 
+    if(typeof(value) === 'number') {
+        const item = data.find((item: any) => {
+            return item.id === value;
+        })
+        if (item) {
+            inputHandler(id, item.id, item.name)
+        } else {
+            inputHandler(id, undefined, '');
+        }
+    }
+
     const handler = (e: any) => {
         let value = e.target.value
 

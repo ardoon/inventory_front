@@ -9,6 +9,7 @@ import { useState } from "react"
 import EntryRecordRowNew from "@/components/partials/table/entry-record-row-new";
 import EntryRecordRow from "@/components/partials/table/entry-record-row";
 import TextInputWithData from "@/components/partials/dashboard/TextInput-with-data";
+import Record from "@/models/record";
 
 const NewEntry = () => {
 
@@ -37,11 +38,23 @@ const NewEntry = () => {
     })
   }
 
-  const [records, setRecords] = useState([]);
+  const [records, setRecords] = useState<Record[]>([]);
 
-  function addRecord(record: any) {     
+  function addRecord(record: any) {
     const joined = records.concat(record);
     setRecords(joined);
+  }
+
+  function updateRecord(no: number, record: Record) {
+    setRecords(
+      records.map((item, index) => {
+        if (index === no) {
+          return record;
+        } else {
+          return item
+        }
+      }) as Record[]
+    )
   }
 
   return (
@@ -88,7 +101,7 @@ const NewEntry = () => {
             <EntryRecordRowNew add={addRecord} />
             {
               records?.map((record, index) => {
-                return <EntryRecordRow key={index} no={index} record={record} />
+                return <EntryRecordRow update={updateRecord} key={index} no={index} single={record} />
               })
             }
           </tbody>
