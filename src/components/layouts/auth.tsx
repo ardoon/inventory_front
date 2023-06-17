@@ -6,21 +6,19 @@ export default function AuthLayout({ children }: {
     children: ReactNode
 }) {
 
-    const router = useRouter();
+    // const router = useRouter();
 
-    const {user, error, loading} = useAuth();
+    // const {user, error, loading} = useAuth();
 
-    if(user) {
-        router.push('/dashboard');
-        return <></>;
-    }
+    // if(user) {
+    //     router.push('/dashboard');
+    //     return <></>;
+    // }
 
     return (
 
         <main className='container mx-auto justify-center text-white'>
-        {
-            loading ? <p>Loading..</p> : children
-        }
+        { children }
         </main>
 
     )

@@ -2,8 +2,6 @@ import { useTranslation } from 'next-i18next';
 import { ReactNode, useEffect } from 'react'
 import Sidebar from '../partials/sidebar/sidebar'
 import { useRouter } from 'next/router';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/store/store';
 import useAuth from '@/hooks/useAuth';
 
 export default function DashboardLayout({ children }: {

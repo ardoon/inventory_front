@@ -2,6 +2,7 @@ import Link from "next/link";
 
 type inputProps = {
     type: string,
+    item: any
 }
 
 export default function TransactionsRow(props: inputProps) {

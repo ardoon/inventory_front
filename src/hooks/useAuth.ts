@@ -9,7 +9,7 @@ const useAuth = () => {
     const dispatch = useAppDispatch();
     
     const { data, error } = useSWR('user_me', async() => {
-        return callApi().get('/auth/check')
+        return await callApi().get('/auth/check')
     })
 
     dispatch(updateUser(data?.data))
