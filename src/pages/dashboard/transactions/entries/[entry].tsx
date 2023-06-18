@@ -17,6 +17,7 @@ import EntryRecordRaw from "@/components/partials/table/entry-record-raw"
 import useSWR from 'swr'
 import Record from "@/models/record";
 import Entry from "@/models/entry";
+import DeleteConfirmation from "@/components/partials/dashboard/deleteConfirmation";
 
 const EditEntry = () => {
 
@@ -89,6 +90,22 @@ const EditEntry = () => {
     }
   }
 
+  const deleteEntryHandler = async (e: FormEvent) => {
+    e.preventDefault();
+    try {
+      await callApi().delete(`/entries/${router.query.entry}`)
+      toast.warning('ورودی مورد نظر حذف شد')
+      router.push('/dashboard/transactions/entries')
+    } catch (err) {
+      console.log(err);
+    }
+
+  }
+
+  const setShowModal = (show = true) => {
+    router.push(`/dashboard/transactions/entries/${router.query.entry}/${show ? '?confirm' : ''}`)
+  }
+
   return (
     <DashboardLayout>
       <Head>
@@ -98,6 +115,10 @@ const EditEntry = () => {
       <SectionHeading title="ویرایش ورودی" backward />
 
       <form className="grid grid-cols-2 gap-4">
+
+        {
+          'confirm' in router.query && <DeleteConfirmation title="حذف ورودی" description="ورودی" handleTrue={deleteEntryHandler} handleCancel={() => setShowModal(false)} />
+        }
 
         <div className={`col-span-1 space-y-2`}>
           <label className='text-slate-300 text-sm block' htmlFor=''>تاریخ</label>
@@ -116,7 +137,12 @@ const EditEntry = () => {
         <TextInput inputHandler={(val: string) => { setEntry({ ...entry, receptNo: val }) }} value={entry?.receptNo} id="no" label="شماره رسید" colSpan={1} />
         <TextInputWithData value={entry?.userName} inputHandler={inputHandler} id="userId" label="وارد کننده" colSpan={1} dataKey="users" />
         <TextInputWithData value={entry?.warehouseName} inputHandler={inputHandler} id="warehouseId" label="انبار" colSpan={1} dataKey="warehouses" />
-        <button onClick={(e) => saveData(e)} type="submit" className="bg-indigo-600 hover:bg-indigo-700 rounded-md h-12 col-span-2 mt-6 mb-10">ذخیره</button>
+
+        <div className="col-span-2 grid grid-cols-5 gap-4">
+          <button onClick={(e) => saveData(e)} type="submit" className="bg-indigo-600 hover:bg-indigo-700 rounded-md h-12 col-span-4 mt-6 mb-10">ذخیره</button>
+          <span onClick={() => setShowModal(true)} className="bg-rose-600 cursor-pointer flex items-center justify-center hover:bg-rose-700 rounded-md h-12 col-span-1 mt-6 mb-10">حذف</span>
+        </div>
+
 
         <SectionHeading title="لیست اقلام" />
         {
