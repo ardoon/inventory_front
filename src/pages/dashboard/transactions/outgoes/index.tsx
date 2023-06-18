@@ -17,13 +17,13 @@ const Outgoes = () => {
 
         <div className="space-y-6">
           
+          {/* <TransactionsRow type='output'/>
           <TransactionsRow type='output'/>
           <TransactionsRow type='output'/>
           <TransactionsRow type='output'/>
           <TransactionsRow type='output'/>
           <TransactionsRow type='output'/>
-          <TransactionsRow type='output'/>
-          <TransactionsRow type='output'/>
+          <TransactionsRow type='output'/> */}
 
         </div>
       </section>

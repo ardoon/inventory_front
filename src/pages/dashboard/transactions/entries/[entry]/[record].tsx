@@ -2,6 +2,7 @@ import DashboardLayout from "@/components/layouts/dashboard"
 import TextInputDynamic from "@/components/partials/dashboard/TextInput-dynamic"
 import TextInputDynamicNumber from "@/components/partials/dashboard/TextInput-dynamicNumber"
 import TextInputWithData from "@/components/partials/dashboard/TextInput-with-data"
+import DeleteConfirmation from "@/components/partials/dashboard/deleteConfirmation"
 import SectionHeading from "@/components/partials/dashboard/section-heading"
 import callApi from "@/helpers/callApi"
 import Record from "@/models/record"
@@ -58,8 +59,8 @@ const EditRecord = () => {
 
   async function saveData(e: FormEvent) {
     e.preventDefault();
-    if(record?.productId && record?.amount && record.unitId && record.price) {
-      try {     
+    if (record?.productId && record?.amount && record.unitId && record.price) {
+      try {
         const result = await callApi().patch(`/entries/records/${router.query.record}`, {
           productId: record.productId,
           amount: +record.amount,
@@ -67,7 +68,7 @@ const EditRecord = () => {
           price: +record.price,
           description: record.description,
         });
-        if(result.data.id) {
+        if (result.data.id) {
           toast.success('با موفقیت انجام شد')
           router.push(`/dashboard/transactions/entries/${router.query.entry}`)
         }
@@ -75,6 +76,22 @@ const EditRecord = () => {
         toast.error(`Error: ${err}`)
       }
     }
+  }
+
+  const deleteRecordHandler = async (e: FormEvent) => {
+    e.preventDefault();
+    try {
+      await callApi().delete(`/entries/records/${router.query.record}`)
+      toast.warning('ورودی مورد نظر حذف شد')
+      router.push(`/dashboard/transactions/entries/${router.query.entry}`)
+    } catch (err) {
+      console.log(err);
+    }
+
+  }
+
+  const setShowModal = (show = true) => {
+    router.push(`/dashboard/transactions/entries/${router.query.record}/${show ? '?confirm' : ''}`)
   }
 
   return (
@@ -98,7 +115,7 @@ const EditRecord = () => {
         <tbody>
           <tr>
             <td>
-              { record?.productName ? <TextInputWithData defaultValue={record.productName} colSpan={1} id="productId" label="" dataKey={`products`} inputHandler={inputHandler} /> : <p>Loading..</p> }
+              {record?.productName ? <TextInputWithData defaultValue={record.productName} colSpan={1} id="productId" label="" dataKey={`products`} inputHandler={inputHandler} /> : <p>Loading..</p>}
             </td>
             <td>
               <TextInputDynamicNumber value={record?.amount as number} colSpan={1} id="amount" label="" inputHandler={inputHandler} />
@@ -119,7 +136,14 @@ const EditRecord = () => {
         </tbody>
       </table>
 
-      <button onClick={(e) => saveData(e)} type="submit" className="bg-indigo-600 w-full hover:bg-indigo-700 rounded-md h-12 col-span-2 mt-4">اعمال تغییرات</button>
+      <div className="grid grid-cols-6 gap-4">
+        <button onClick={(e) => saveData(e)} type="submit" className="bg-indigo-600 col-span-5 hover:bg-indigo-700 rounded-md h-12 mt-4">اعمال تغییرات</button>
+        <span onClick={() => setShowModal(true)} className="bg-rose-600 cursor-pointer flex items-center justify-center hover:bg-rose-700 rounded-md h-12 col-span-1 mt-4 mb-10">حذف</span>
+      </div>
+
+      {
+        'confirm' in router.query && <DeleteConfirmation title="حذف ورودی" description="ورودی" handleTrue={deleteRecordHandler} handleCancel={() => setShowModal(false)} />
+      }
 
     </DashboardLayout>
   )
