@@ -82,7 +82,7 @@ const EditRecord = () => {
     e.preventDefault();
     try {
       await callApi().delete(`/entries/records/${router.query.record}`)
-      toast.warning('ورودی مورد نظر حذف شد')
+      toast.warning('رکورد مورد نظر حذف شد')
       router.push(`/dashboard/transactions/entries/${router.query.entry}`)
     } catch (err) {
       console.log(err);
@@ -91,7 +91,7 @@ const EditRecord = () => {
   }
 
   const setShowModal = (show = true) => {
-    router.push(`/dashboard/transactions/entries/${router.query.record}/${show ? '?confirm' : ''}`)
+    router.push(`/dashboard/transactions/entries/${router.query.entry}/${router.query.record}/${show ? '?confirm' : ''}`)
   }
 
   return (
