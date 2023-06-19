@@ -10,7 +10,6 @@ export default function EntryRecordRaw({ record, no }: { record: any, no: number
 
             <div className="grid grid-cols-12 flex-grow px-6 items-center">
                 <div className="col-span-1">
-                    <span className="text-sm text-blue-300">ردیف: </span>
                     <span className="text-sm text-gray-400">{no + 1}</span>
                 </div>
                 <div className="col-span-3">
