@@ -84,7 +84,7 @@ const NewEntry = () => {
           records
         }        
         const result = await callApi().post('/entries', body);
-        if(result.data.userId) {
+        if(result.data.user.id && result.data.records.length > 0) {
           toast.success('ثبت ورود با موفقیت انجام شد')
           router.push('/dashboard/transactions/entries')
         }
