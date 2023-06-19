@@ -140,7 +140,11 @@ const EditEntry = () => {
 
         <div className="col-span-2 grid grid-cols-5 gap-4">
           <button onClick={(e) => saveData(e)} type="submit" className="bg-indigo-600 hover:bg-indigo-700 rounded-md h-12 col-span-3 mt-6 mb-10">ذخیره</button>
-          <span onClick={() =>{}} className="bg-indigo-600 cursor-pointer flex items-center justify-center hover:bg-indigo-700 rounded-md h-12 col-span-1 mt-6 mb-10">افزودن کالا</span>
+          <span
+            onClick={() => { router.push(`/dashboard/transactions/entries/${router.query.entry}/new-record`) }}
+            className="bg-indigo-600 cursor-pointer flex items-center justify-center hover:bg-indigo-700 rounded-md h-12 col-span-1 mt-6 mb-10">
+            افزودن کالا
+          </span>
           <span onClick={() => setShowModal(true)} className="bg-rose-600 cursor-pointer flex items-center justify-center hover:bg-rose-700 rounded-md h-12 col-span-1 mt-6 mb-10">حذف</span>
         </div>
 
