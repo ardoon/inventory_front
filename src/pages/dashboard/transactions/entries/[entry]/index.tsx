@@ -96,7 +96,9 @@ const EditEntry = () => {
       await callApi().delete(`/entries/${router.query.entry}`)
       toast.warning('ورودی مورد نظر حذف شد')
       router.push('/dashboard/transactions/entries')
-    } catch (err) {
+    } catch (err:any) {
+      setShowModal(false)
+      toast.error(err.data);
       console.log(err);
     }
 
