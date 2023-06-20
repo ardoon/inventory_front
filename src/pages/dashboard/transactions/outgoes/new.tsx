@@ -2,52 +2,106 @@ import DashboardLayout from "@/components/layouts/dashboard"
 import SectionHeading from "@/components/partials/dashboard/section-heading"
 import TextInput from "@/components/partials/dashboard/TextInput"
 import Head from "next/head"
-import DatePicker from "react-multi-date-picker";
+import DatePicker, { DateObject } from "react-multi-date-picker";
 import jalali from "react-date-object/calendars/jalali"
 import persian_fa from "react-date-object/locales/persian_fa"
-import { useEffect, useState } from "react"
+import { FormEvent, useState } from "react"
+import TextInputWithData from "@/components/partials/dashboard/TextInput-with-data";
+import Record from "@/models/record";
+import callApi from "@/helpers/callApi";
+import { useRouter } from "next/router";
+import { toast } from "react-toastify";
+import gregorian from "react-date-object/calendars/gregorian"
+import gregorian_en from "react-date-object/locales/gregorian_en"
+import OutgoRecordRowNew from "@/components/partials/table/outgo-record-row-new";
+import OutgoRecordRow from "@/components/partials/table/outgo-record-row";
+import OutgoRecord from "@/models/outgoRecord";
 
 const NewOutgo = () => {
 
-  const [hasMounted, setHasMounted] = useState(false);
-
-  useEffect(() => {
-    setHasMounted(true);
-  }, []);
-
-  if (!hasMounted) {
-    return null;
+  const router = useRouter();
+  interface Section {
+    date: DateObject,
+    receptNo: string,
+    userId: number,
+    sectionId: number
   }
 
+  const [outgo, setOutgo] = useState<Partial<Section>>({
+    date: new DateObject(),
+    receptNo: new Date().getTime().toString(),
+    userId: undefined,
+    sectionId: undefined
+  });
 
-  const units = [
-    'متر',
-    'کلیوگرم',
-    'بسته',
-    'کیسه',
-    'عدد'
-  ]
+  function setDate(val: DateObject) {
+    setOutgo({ ...outgo, date: val });
+  }
 
-  const warehouses = [
-    'west',
-    'east',
-    'north',
-    'south'
-  ]
+  function inputHandler(key: string, value: string | number) {
+    setOutgo({
+      ...outgo,
+      [key]: value
+    })
+  }
 
-  const users = [
-    'aran',
-    'shaho',
-    'ramin'
-  ]
+  const [records, setRecords] = useState<OutgoRecord[]>([]);
+
+  function addRecord(record: any) {
+    const joined = records.concat(record);
+    setRecords(joined);
+  }
+
+  function updateRecord(no: number, record: Record) {
+    setRecords(
+      records.map((item, index) => {
+        if (index === no) {
+          return record;
+        } else {
+          return item
+        }
+      }) as OutgoRecord[]
+    )
+  }
+
+  function removeRecord(no: number) {
+    let recs = records;
+    recs = recs.filter((item, index) => index !== no)
+    // setRecords(recs);
+    setRecords(prev => (recs));
+  }
+
+  async function saveData(e: FormEvent) {
+    e.preventDefault();
+    if(outgo.date && outgo.receptNo && outgo.userId && outgo.sectionId && records.length > 0) {
+      try {
+        const body = {
+          outgo: {
+            date: (outgo.date.convert(gregorian, gregorian_en).toDate()),
+            receptNo: outgo.receptNo,
+            userId: +(outgo.userId),
+            sectionId: +(outgo.sectionId)
+          },
+          records
+        }        
+        const result = await callApi().post('/outgoes', body);
+        if(result.data.user.id && result.data.records.length > 0) {
+          toast.success('ثبت خروج با موفقیت انجام شد')
+          router.push('/dashboard/transactions/outgoes')
+        }
+      } catch (err) {
+        toast.error(`Error: ${err}`)
+      }
+    }
+  }
 
   return (
     <DashboardLayout>
       <Head>
-        <title>{`SamCity | ثبت خروجی جدید`}</title>
+        <title>{`SamCity | ثبت خروج جدید`}</title>
       </Head>
 
-      <SectionHeading title="ثبت خروج جدید" backward={true} />
+      <SectionHeading title="ثبت خروج جدید" backward />
 
       <form className="grid grid-cols-2 gap-4">
 
@@ -60,41 +114,37 @@ const NewOutgo = () => {
             inputClass={`h-12 border-0 text-slate-300 text-sm w-full rounded-md block bg-slate-800 focus:ring-0 px-4`}
             containerStyle={{ width: "100%", paddingTop: "5px" }}
             calendarPosition="bottom-right"
+            value={outgo.date}
+            onChange={(val: DateObject) => { setDate(val) }}
           />
         </div>
 
-        <TextInput id="no" label="شماره رسید" colSpan={1} />
-        <TextInput id="user" label="خارج کننده" colSpan={1} data={users} />
-        <TextInput id="warehouse" label="بخش مصرف کننده" colSpan={1} data={warehouses} />
+        <TextInput inputHandler={(val: string) => { setOutgo({ ...outgo, receptNo: val }) }} defaultValue={outgo.receptNo} id="no" label="شماره رسید" colSpan={1} />
+        <TextInputWithData inputHandler={inputHandler} id="userId" label="خارج کننده" colSpan={1} dataKey="users" />
+        <TextInputWithData inputHandler={inputHandler} id="sectionId" label="محل مصرف" colSpan={1} dataKey="sections" />
 
         <table className="mt-10 text-sm col-span-2 border-separate border-spacing-2">
-          <tr className="">
-            <th>ردیف</th>
-            <th>کالا</th>
-            <th>مقدار</th>
-            <th>واحد</th>
-            <th>توضیحات</th>
-            <th></th>
-          </tr>
-          <tr className="space-x-2">
-            <td className="flex items-center h-10 justify-center">1</td>
-            <td><input type='text' className="bg-slate-800 border-none rounded-sm w-full" /></td>
-            <td><input type='text' className="bg-slate-800 border-none rounded-sm w-full" /></td>
-            <td><input type='text' className="bg-slate-800 border-none rounded-sm w-full" /></td>
-            <td><input type='text' className="bg-slate-800 border-none rounded-sm w-full" /></td>
-            <td className="pt-1"><i className="bi bi-trash3 cursor-pointer text-rose-400"></i></td>
-          </tr>
-          <tr className="space-x-2">
-            <td className="flex items-center h-10 justify-center">2</td>
-            <td><input type='text' className="bg-slate-800 border-none rounded-sm w-full" /></td>
-            <td><input type='text' className="bg-slate-800 border-none rounded-sm w-full" /></td>
-            <td><input type='text' className="bg-slate-800 border-none rounded-sm w-full" /></td>
-            <td><input type='text' className="bg-slate-800 border-none rounded-sm w-full" /></td>
-            <td className="pt-1 text-2xl cursor-pointer">+</td>
-          </tr>
+          <thead>
+            <tr>
+              <th>ردیف</th>
+              <th>کالا</th>
+              <th>مقدار</th>
+              <th>واحد</th>
+              <th>توضیحات</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <OutgoRecordRowNew add={addRecord} />
+            {
+              records?.map((record, index) => {
+                return <OutgoRecordRow update={updateRecord} remove={removeRecord} key={index} no={index} single={record} />
+              })
+            }
+          </tbody>
         </table>
 
-        <button type="submit" className="bg-indigo-600 hover:bg-indigo-700 rounded-md h-12 col-span-2 mt-4">ثبت</button>
+        <button onClick={(e) => saveData(e)} type="submit" className="bg-indigo-600 hover:bg-indigo-700 rounded-md h-12 col-span-2 mt-4">ثبت</button>
 
       </form>
 
