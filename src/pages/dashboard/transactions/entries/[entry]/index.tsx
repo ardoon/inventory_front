@@ -141,7 +141,12 @@ const EditEntry = () => {
         <TextInputWithData value={entry?.warehouseName} inputHandler={inputHandler} id="warehouseId" label="انبار" colSpan={1} dataKey="warehouses" />
 
         <div className="col-span-2 grid grid-cols-5 gap-4">
-          <button onClick={(e) => saveData(e)} type="submit" className="bg-indigo-600 hover:bg-indigo-700 rounded-md h-12 col-span-3 mt-6 mb-10">ذخیره</button>
+          <button onClick={(e) => saveData(e)} type="submit" className="bg-indigo-600 hover:bg-indigo-700 rounded-md h-12 col-span-2 mt-6 mb-10">ذخیره</button>
+          <span
+            onClick={() => { router.push(`/dashboard/transactions/entries/${router.query.entry}/print`) }}
+            className="bg-indigo-600 cursor-pointer flex items-center justify-center hover:bg-indigo-700 rounded-md h-12 col-span-1 mt-6 mb-10">
+            چاپ
+          </span>
           <span
             onClick={() => { router.push(`/dashboard/transactions/entries/${router.query.entry}/new-record`) }}
             className="bg-indigo-600 cursor-pointer flex items-center justify-center hover:bg-indigo-700 rounded-md h-12 col-span-1 mt-6 mb-10">

@@ -1,3 +1,5 @@
+import Product from "./product";
+
 export default interface Record {
     id: number,
     productId: number | string,
@@ -6,5 +8,6 @@ export default interface Record {
     unitId: number | string,
     unitName: string,
     price: number | string,
-    description: string
+    description: string,
+    product?: Product
 }
