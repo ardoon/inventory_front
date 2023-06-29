@@ -20,10 +20,10 @@ const Dashboard = () => {
 
       <header className="h-48 grid grid-cols-4 gap-6 mb-10">
 
-        <ShortcutBox label='ثبت ورود به انبار' icon='plus-square' link='/' />
-        <ShortcutBox label='ثبت خروج از انبار' icon='escape' link='/' />
+        <ShortcutBox label='ثبت ورود به انبار' icon='plus-square' link='/dashboard/transactions/entries/new' />
+        <ShortcutBox label='ثبت خروج از انبار' icon='escape' link='/dashboard/transactions/outgoes/new' />
         <ShortcutBox label='مدیریت کالاها' icon='box-seam' link='/' />
-        <ShortcutBox label='مشاهده کاربران' icon='people' link='/' />
+        <ShortcutBox label='مشاهده کاربران' icon='people' link='/dashboard/users' />
 
       </header>
 
