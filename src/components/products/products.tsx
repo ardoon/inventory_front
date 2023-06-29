@@ -59,7 +59,7 @@ export default function Products() {
                     {
                         loadingItems || loadingUnits ? <p>Loading..</p>
                         : products?.map((item: Product) => {
-                            return <ProductItem key={item.id} name={item.name} primaryUnit={getUnit(item.unitId)} secondaryUnit={getUnit(item.secondaryUnitId)} amount={0} link={`/dashboard/products/list/edit/${item.id}`} />
+                            return <ProductItem key={item.id} name={item.name} primaryUnit={getUnit(item.unitId)} secondaryUnit={getUnit(item.secondaryUnitId)} amount={item.amount ?? 0} link={`/dashboard/products/list/edit/${item.id}`} />
                         })
                     }
                 </>

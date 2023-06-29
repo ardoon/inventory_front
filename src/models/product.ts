@@ -4,5 +4,6 @@ export default interface Product {
     categoryId: number,
     unitId: number,
     secondaryUnitId?: number,
-    unitsRatio?: number
+    unitsRatio?: number,
+    amount?: number
 }

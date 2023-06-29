@@ -15,19 +15,20 @@ const NewProduct = () => {
 
   const router = useRouter();
 
-  const {data: units} = useSWR({url: '/dashboard/products/units'}, GetUnits);
+  const { data: units } = useSWR({ url: '/dashboard/products/units' }, GetUnits);
 
   const [product, setProduct] = useState<Partial<Product>>({
     name: '',
     categoryId: parseInt(router.query.categoryId as string),
     unitId: undefined,
     secondaryUnitId: undefined,
-    unitsRatio: undefined
+    unitsRatio: undefined,
+    amount: undefined
   })
 
   function inputHandler(key: string, value: string | number) {
-    if(key === "unitId") {
-      if(value === "") {
+    if (key === "unitId") {
+      if (value === "") {
         setProduct({
           ...product,
           unitId: undefined
@@ -36,14 +37,14 @@ const NewProduct = () => {
       const unit: Unit = units.find((unit: Unit) => {
         return unit.name === value;
       })
-      if(unit) { 
+      if (unit) {
         setProduct({
           ...product,
           unitId: +unit.id
         })
       }
-    } else if(key === 'secondaryUnitId') {
-      if(value === "") {
+    } else if (key === 'secondaryUnitId') {
+      if (value === "") {
         setProduct({
           ...product,
           secondaryUnitId: undefined
@@ -52,16 +53,21 @@ const NewProduct = () => {
       const unit: Unit = units.find((unit: Unit) => {
         return unit.name === value;
       })
-      if(unit) { 
+      if (unit) {
         setProduct({
           ...product,
           secondaryUnitId: +unit.id
         })
       }
-    } else if (key === 'unitsRatio') { 
+    } else if (key === 'unitsRatio') {
       setProduct({
         ...product,
         unitsRatio: +value
+      })
+    } else if (key === 'amount') {
+      setProduct({
+        ...product,
+        amount: +value
       })
     } else {
       setProduct({
@@ -76,7 +82,7 @@ const NewProduct = () => {
     try {
       callApi().post('/products', product)
       router.back();
-    } catch(e) {
+    } catch (e) {
       console.log(e);
     }
   }
@@ -96,9 +102,9 @@ const NewProduct = () => {
         <TextInputDynamic inputHandler={inputHandler} id="unitId" label="واحد اصلی" colSpan={1} data={units} />
         <TextInputDynamic inputHandler={inputHandler} id="secondaryUnitId" data={units} label="واحد ثانویه" colSpan={1} placeHolder='این فیلد اختیاری است' />
         <TextInputDynamicNumber inputHandler={inputHandler} id="unitsRatio" label="نسبت واحد اولیه به ثانویه (عدد صحیح یا اعشاری)" colSpan={1} placeHolder='در صورت وجود واحد ثانویه اجباری است' />
-        <TextInputDynamicNumber inputHandler={inputHandler} id="amount" label="نسبت واحد اولیه به ثانویه (عدد صحیح یا اعشاری)" colSpan={1} placeHolder='در صورت وجود واحد ثانویه اجباری است' />
+        <TextInputDynamicNumber inputHandler={inputHandler} id="amount" label="مقدار اولیه" colSpan={1} />
 
-        <button onClick={(e) => add(e)} type="submit" className="bg-indigo-600 hover:bg-indigo-700 rounded-md h-12 col-span-2 mt-4">ثبت کالا</button>
+        <button onClick={(e) => add(e)} type="submit" className="bg-indigo-600 hover:bg-indigo-700 rounded-md h-12 col-span-1 mt-8">ثبت کالا</button>
 
       </form>
 
